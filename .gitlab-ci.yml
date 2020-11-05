@@ -1,9 +1,7 @@
-stages:
-  - docker-build
-  - doc-build
-  - doc-deploy
-  - build
-  - test
+# Templates for ci jobs
+include: ci_gitlab/gitlab-ci-siconos-templates.yml
+
+
  
 job2:
   stage: build
@@ -21,4 +19,19 @@ job3:
   dependencies: [job2]
   only:
     - master
+
+# ---- Siconos build jobs -----
+
+# Siconos build and install, default config
+# (based on cmake/default_siconos.cmake)
+# on ubuntu 18.04.
+install_siconos:ubuntu18.04:
+  variables:
+    IMAGE_NAME: $CI_REGISTRY_IMAGE/ubuntu18.04
+    cdash_submit: 1
+    user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
+  extends: .siconos-build
+  artifacts:
+    paths:
+      - build
 
