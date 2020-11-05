@@ -18,15 +18,6 @@ docker-build:ubuntu18.04:
 
 
 
-# This job create a docker image with all required dependencies
-# (including serialization, bullet but not OCE)
-# It's based on ubuntu 18.04.
-docker-build:ubuntu18.04-no-python:
-  variables:
-    IMAGE_NAME: ubuntu18.04-no-python
-  extends: .docker-build
-
-
 # ---- Siconos build jobs -----
 
 # Siconos build and install, default config
@@ -43,18 +34,6 @@ install_siconos:ubuntu18.04:
       - build
 
      
-
-# Siconos build and install, without python wrappers
-# (default conf, WITH_PYTHON_WRAPPER=OFF)
-# on ubuntu 18.04.
-install_siconos:ubuntu18.04-no-python:
-  variables:
-    IMAGE_NAME: $CI_REGISTRY_IMAGE/ubuntu18.04-no-python
-    cdash_submit: 1
-    user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_no_python.cmake
-  extends: .siconos-build
-
-
 
 # --- Creates a new pipeline to build documentation
 # Trigger : manual.
