@@ -3,6 +3,13 @@ include: ci_gitlab/gitlab-ci-siconos-templates.yml
 
  
 # ---- Docker build jobs -----
+# This job create a docker image with all required dependencies
+# (including serialization, bullet but not OCE)
+# It's based on ubuntu 18.04.
+docker-build:ubuntu18.04-no-python:
+  variables:
+    IMAGE_NAME: ubuntu18.04-no-python
+  extends: .docker-build
 
 # This job create a docker image with all required dependencies
 # (including serialization, python wrapper, bullet but not OCE)
@@ -33,13 +40,6 @@ install_siconos:ubuntu18.04:
     paths:
       - build
 
-docker-build:ubuntu18.04:
-  variables:
-    IMAGE_NAME: ubuntu18.04
-  stage: docker-build-layer2
-  extends: .docker-build
-  dependencies:
-    - docker-build:ubuntu18.04-no-python
 
 
      
