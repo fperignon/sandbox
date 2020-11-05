@@ -33,6 +33,15 @@ install_siconos:ubuntu18.04:
     paths:
       - build
 
+docker-build:ubuntu18.04:
+  variables:
+    IMAGE_NAME: ubuntu18.04
+  stage: docker-build-layer2
+  extends: .docker-build
+  dependencies:
+    - docker-build:ubuntu18.04-no-python
+
+
      
 
 # --- Creates a new pipeline to build documentation
