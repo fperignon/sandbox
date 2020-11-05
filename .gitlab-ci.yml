@@ -135,17 +135,6 @@ install_siconos:ubuntu18.04:
     paths:
       - build
 
-# Same as above but with many devel (warnings ...) options activated.
-install_siconos:ubuntu18.04-devmode:
-  variables:
-    IMAGE_NAME: $CI_REGISTRY_IMAGE/ubuntu18.04
-    cdash_submit: 1
-    user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_devmode.cmake
-  extends: .siconos-build
-  artifacts:
-    paths:
-      - build
-
 install_siconos:ubuntu18.04-paranoidmode:
   variables:
     IMAGE_NAME: $CI_REGISTRY_IMAGE/ubuntu18.04
@@ -158,47 +147,6 @@ install_siconos:ubuntu18.04-paranoidmode:
   allow_failure: true
   when: manual
       
-# Siconos build and install, default config
-# (based on cmake/default_siconos.cmake)
-# on debian buster
-install_siconos:debian-buster:
-  variables:
-    IMAGE_NAME: $CI_REGISTRY_IMAGE/debian-buster
-    cdash_submit: 1
-    user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
-  extends: .siconos-build
-  # artifacts:
-  #   paths:
-  #     - build
-
-# Siconos build and install, default config
-# (based on cmake/default_siconos.cmake)
-# on debian unstable. Manual only
-install_siconos:debian-unstable:
-  variables:
-    IMAGE_NAME: $CI_REGISTRY_IMAGE/debian-unstable
-    cdash_submit: 1
-    user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
-  extends: .siconos-build
-  allow_failure: true
-  when: manual
-  # artifacts:
-  #   paths:
-  #     - build
-    
-# Siconos build and install, default config
-# (based on cmake/default_siconos.cmake)
-# on ubuntu 18.04.
-install_siconos:opensuse-leap-15.0:
-  variables:
-    IMAGE_NAME: $CI_REGISTRY_IMAGE/opensuse-leap-15.0
-    cdash_submit: 1
-    user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
-  extends: .siconos-build
-  # artifacts:
-  #   paths:
-  #     - build
-
 
 # Siconos build and install, without python wrappers
 # (default conf, WITH_PYTHON_WRAPPER=OFF)
@@ -210,73 +158,6 @@ install_siconos:ubuntu18.04-no-python:
     user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_no_python.cmake
   extends: .siconos-build
 
-
-# Siconos build and install, with mechanisms
-# (oce and pythonocc parts activated).
-# on ubuntu 18.04.
-install_siconos:ubuntu18.04-oce:
-  variables:
-    IMAGE_NAME: $CI_REGISTRY_IMAGE/ubuntu18.04-oce
-    cdash_submit: 1
-    user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_with_mechanisms.cmake
-  extends: .siconos-build
-
-# Siconos build and install, with mumps parallel activated
-# on ubuntu 18.04.
-install_siconos:ubuntu18.04-mumps-par:
-  variables:
-    IMAGE_NAME: $CI_REGISTRY_IMAGE/ubuntu18.04-mumps-par
-    cdash_submit: 1
-    user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_with_mumps_par.cmake
-  extends: .siconos-build
-
-
-# Siconos build and install, with fclib ON
-# on ubuntu 18.04.
-install_siconos:ubuntu18.04-fclib:
-  variables:
-    IMAGE_NAME: $CI_REGISTRY_IMAGE/ubuntu18.04-fclib
-    cdash_submit: 1
-    user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_with_fclib.cmake
-  extends: .siconos-build
-
-# Siconos build and install, with serialization/generation ON
-# on ubuntu 18.04.
-install_siconos:ubuntu18.04-serialization:
-  variables:
-    IMAGE_NAME: $CI_REGISTRY_IMAGE/ubuntu18.04-doc
-    cdash_submit: 1
-    user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_with_serialization.cmake
-    allow_parallel_build: 0
-  extends: .siconos-build
-  artifacts:
-    paths:
-      - build
-    when: on_failure
-
-# Siconos build and install, with serialization/generation ON
-# on debian unstable.
-install_siconos:debian-unstable-serialization:
-  variables:
-    IMAGE_NAME: $CI_REGISTRY_IMAGE/debian-unstable
-    cdash_submit: 1
-    user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_with_serialization.cmake
-    allow_parallel_build: 0
-  extends: .siconos-build
-  allow_failure: true
-  artifacts:
-    paths:
-      - build
-    when: on_failure
-
-# Siconos build and install, default setup
-# on centos 7
-install_siconos:centos-7:
-  variables:
-    IMAGE_NAME: $CI_REGISTRY_IMAGE/centos-7
-  extends: .siconos-build
-  script: 
-     - "sh ci_gitlab/install_siconos_centos.sh"
 
 
 # --- Creates a new pipeline to build documentation
