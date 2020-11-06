@@ -30,6 +30,8 @@
 # - USER_FILE : user options file.
 # - OSNAME : set to IMAGE_NAME
 # - ALLOW_PARALLEL_BUILD : set to 1 to allow -jN, 0 to restrict to -j1.
+cd $CI_PROJECT_DIR/build
+ls -altr
 ctest -S ${CI_PROJECT_DIR}/ci_gitlab/ctest_driver_install_siconos.cmake -Dmodel=$ctest_build_model -DSICONOS_INSTALL_DIR=${CI_PROJECT_DIR}/install-siconos -DUSER_FILE=$1 -DOSNAME=$IMAGE_NAME -DALLOW_PARALLEL_BUILD=$allow_parallel_build -DCDASH_SUBMIT=$cdash_submit -V -DJOB_MODE=2
 #cmake $CI_PROJECT_DIR
 #make -j 4
