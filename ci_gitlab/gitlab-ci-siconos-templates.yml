@@ -46,6 +46,7 @@ stages:
   # - configure, build Siconos
   # - run tests
   # - submit to cdash
+  - configure
   - build
   - test
   # Templates for these jobs : .siconos-build (see below).
