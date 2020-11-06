@@ -25,12 +25,32 @@ job3:
 # Siconos build and install, default config
 # (based on cmake/default_siconos.cmake)
 # on ubuntu 18.04.
-install_siconos:ubuntu18.04:
+configure:ubuntu18.04:
+  variables:
+    IMAGE_NAME: $CI_REGISTRY_IMAGE/ubuntu18.04
+    cdash_submit: 1
+    user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
+  extends: .siconos-configure
+  artifacts:
+    paths:
+      - build
+
+build:ubuntu18.04:
   variables:
     IMAGE_NAME: $CI_REGISTRY_IMAGE/ubuntu18.04
     cdash_submit: 1
     user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
   extends: .siconos-build
+  artifacts:
+    paths:
+      - build
+
+test:ubuntu18.04:
+  variables:
+    IMAGE_NAME: $CI_REGISTRY_IMAGE/ubuntu18.04
+    cdash_submit: 1
+    user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
+  extends: .siconos-test
   artifacts:
     paths:
       - build

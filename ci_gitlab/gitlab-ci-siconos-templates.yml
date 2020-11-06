@@ -86,8 +86,29 @@ stages:
 # - Pull an image (possibly from siconos registry)
 #   named  IMAGE_NAME
 # - Run for all branches and for all push
+.siconos-configure:
+  image: $IMAGE_NAME
+  stage: configure
+  script:
+    - "sh ci_gitlab/configure_siconos.sh $user_file" 
+
+
+# -- Template for siconos build-test-install jobs --
+# - Pull an image (possibly from siconos registry)
+#   named  IMAGE_NAME
+# - Run for all branches and for all push
 .siconos-build:
   image: $IMAGE_NAME
   stage: build
+  script:
+    - "sh ci_gitlab/build_siconos.sh $user_file" 
+
+# -- Template for siconos build-test-install jobs --
+# - Pull an image (possibly from siconos registry)
+#   named  IMAGE_NAME
+# - Run for all branches and for all push
+.siconos-test:
+  image: $IMAGE_NAME
+  stage: test
   script:
     - "sh ci_gitlab/install_siconos.sh $user_file" 

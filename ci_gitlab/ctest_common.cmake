@@ -66,12 +66,17 @@ endif()
 
 string(REPLACE
   "gricad-registry.univ-grenoble-alpes.fr/nonsmooth/siconos/"
-  "Siconos registry, "
+  "registry, "
   OSNAME ${OSNAME})
 
 if(NOT CTEST_SITE)
   set(CTEST_SITE "${OSNAME} ${osrelease}, ${osplatform}, ${hostname}")
 endif()
+
+#if(${JOB_MODE} EQUAL -1)
+
+
+if(${JOB_MODE} EQUAL 0)
 
 ctest_start(${model})
 
@@ -90,6 +95,7 @@ else()
   message("- Results won't be submitted to a cdash server.\n")
 endif()
 
+
 ctest_configure(
   RETURN_VALUE CONFIGURE_RESULT
   CAPTURE_CMAKE_ERROR CONFIGURE_STATUS
@@ -105,6 +111,9 @@ if(NOT CONFIGURE_STATUS EQUAL 0 OR NOT CONFIGURE_RESULT EQUAL 0)
   message(FATAL_ERROR "\n\n *** Configure (cmake) process failed *** \n\n")
 endif()
 
+elseif(${JOB_MODE} GREATER_EQUAL 1 AND ${JOB_MODE} LESS 2)
+
+  ctest_start(APPEND)
 # --- Build ---
 
 if(NOT CTEST_BUILD_CONFIGURATION)
@@ -127,9 +136,9 @@ if(NOT BUILD_STATUS EQUAL 0 OR NOT BUILD_RESULT EQUAL 0)
   endif()
   message(FATAL_ERROR " *** Build (make) process failed *** ")
 endif()
-
-
+elseif(${JOB_MODE} GREATER_EQUAL 2)
 # -- Tests --
+  ctest_start(APPEND)
 message("\n\n=============== Start ctest_test (nbprocs = ${NP}) =============== ")
 ctest_test(
   PARALLEL_LEVEL NP
@@ -161,12 +170,15 @@ if(NOT CDASH_SUBMIT)
   return()
 endif()
 
+#elseif(${JOB_MODE} GREATER_EQUAL 2)
 # -- Submission to cdash --
 message("\n\n=============== Start ctest_submit =============== ")
-# file(GLOB SUBMIT_FILES ${CMAKE_BINARY_DIR}/Testing/*/*)
-# message(STATUS "submit files : ${SUBMIT_FILES}")
+file(GLOB SUBMIT_FILES ${CTEST_BINARY_DIRECTORY}/Testing/*/*)
+message(STATUS "submit files : ${SUBMIT_FILES}")
+message(STATUS "PATH : ${CTEST_BINARY_DIRECTORY}")
+
 ctest_submit(
-#  FILES ${SUBMIT_FILES}
+  FILES ${SUBMIT_FILES}
 #   PARTS Configure
 #   CAPTURE_CMAKE_ERROR  SUBMISSION_STATUS)
 # ctest_submit(
@@ -174,11 +186,12 @@ ctest_submit(
 #   CAPTURE_CMAKE_ERROR  SUBMISSION_STATUS)
 # ctest_submit(
 #   PARTS Test
-  CAPTURE_CMAKE_ERROR  SUBMISSION_STATUS
+CAPTURE_CMAKE_ERROR  SUBMISSION_STATUS
   #RETRY_COUNT 4 # Retry 4 times, if submission failed ...)
   #  RETRY_DELAY 1 # seconds
   )
 message("=============== End of ctest_test =============== ")
+endif()
 
 # ============= Summary =============
 message(STATUS "\n============================================ Summary ============================================")
@@ -189,12 +202,13 @@ message(STATUS "Build name (cdash) : ${CTEST_BUILD_NAME}")
 message(STATUS "Site (cdash) : ${CTEST_SITE}")
 message(STATUS "=================================================================================================\n")
 
+if(JOB_MODE GREATER_EQUAL 2)
 # tests failed?
 if(NOT TEST_STATUS EQUAL 0 OR NOT TEST_RESULT EQUAL 0)
   message(FATAL_ERROR " *** test failure *** ")
 endif()
-
-# -- Submission failed? --
-if(NOT SUBMISSION_STATUS EQUAL 0)
-  message(WARNING " *** submission failure *** ")
 endif()
+# -- Submission failed? --
+# if(NOT SUBMISSION_STATUS EQUAL 0)
+#   message(WARNING " *** submission failure *** ")
+# endif()
