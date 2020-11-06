@@ -91,6 +91,7 @@ stages:
   image: $IMAGE_NAME
   stage: configure
   script:
+    - echo $CI_COMMIT_REF_NAME
     - "sh ci_gitlab/configure_siconos.sh $user_file" 
 
 

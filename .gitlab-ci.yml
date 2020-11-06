@@ -47,7 +47,7 @@ build:ubuntu18.04:
     untracked: true
   artifacts:
     paths:
-      - build
+      - $CI_PROJECT_DIR
 
 test:ubuntu18.04:
   variables:

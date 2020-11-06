@@ -35,6 +35,8 @@ python3 -m pip  install packaging
 # - USER_FILE : user options file.
 # - OSNAME : set to IMAGE_NAME
 # - ALLOW_PARALLEL_BUILD : set to 1 to allow -jN, 0 to restrict to -j1.
+echo "git commit ?" $CI_COMMIT_REF_NAME
+git rev-parse HEAD
 ctest  -S ${CI_PROJECT_DIR}/ci_gitlab/ctest_driver_install_siconos.cmake -Dmodel=$ctest_build_model -DSICONOS_INSTALL_DIR=${CI_PROJECT_DIR}/install-siconos -DUSER_FILE=$1 -DOSNAME=$IMAGE_NAME -DALLOW_PARALLEL_BUILD=$allow_parallel_build -DCDASH_SUBMIT=1 -DJOB_MODE=0 -V
 #cmake $CI_PROJECT_DIR
 #make -j 4
