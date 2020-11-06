@@ -173,12 +173,12 @@ endif()
 #elseif(${JOB_MODE} GREATER_EQUAL 2)
 # -- Submission to cdash --
 message("\n\n=============== Start ctest_submit =============== ")
-file(GLOB SUBMIT_FILES ${CTEST_BINARY_DIRECTORY}/Testing/*/*)
-message(STATUS "submit files : ${SUBMIT_FILES}")
-message(STATUS "PATH : ${CTEST_BINARY_DIRECTORY}")
+#file(GLOB SUBMIT_FILES ${CTEST_BINARY_DIRECTORY}/Testing/*/*)
+#message(STATUS "submit files : ${SUBMIT_FILES}")
+#message(STATUS "PATH : ${CTEST_BINARY_DIRECTORY}")
 
 ctest_submit(
-  FILES ${SUBMIT_FILES}
+# FILES ${SUBMIT_FILES}
 #   PARTS Configure
 #   CAPTURE_CMAKE_ERROR  SUBMISSION_STATUS)
 # ctest_submit(
