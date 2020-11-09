@@ -174,7 +174,7 @@ if(CDASH_SUBMIT)
   ctest_submit(
   # FILES ${SUBMIT_FILES}
   SUBMIT_URL "http://my.cdash.org/submit.php?project=sandbox"
-  BUILD_ID buildid
+  # BUILD_ID buildid # Implemented in cmake 3.15
   RETURN_VALUE confret
   CAPTURE_CMAKE_ERROR SUBMISSION_STATUS
   )
