@@ -29,27 +29,6 @@ metrics:
     reports:
       metrics: metrics.txt
 
-run_rats:
-  image: $CI_REGISTRY_IMAGE/ubuntu18.04
-  stage: docker-build
-  type: test
-  script:
-  -  apt update  && apt install -y -qq wget
-  - wget http://downloads.sourceforge.net/project/expat/expat/2.0.1/expat-2.0.1.tar.gz
-  - tar -xvf expat-2.0.1.tar.gz
-  - cd expat-2.0.1 && ./configure && make && make install
-  - wget https://rough-auditing-tool-for-security.googlecode.com/files/rats-2.4.tgz
-  - tar -xzvf rats-2.4.tgz
-  - cd rats-2.4 && ./configure && make && sudo make install
-  - rats -l 'c' ./kernel/src/modelingTools/* >> rats.txt
-  - test $(grep -c 'High' rats.txt) -eq 0
-  artifacts:
-    when: always
-    untracked: true
-    paths:
-    - ./kernel/src/modelingTools/*
-    - ./.gitlab-ci.yml
-
 
 # Siconos build and install, default config
 # (based on cmake/default_siconos.cmake)
