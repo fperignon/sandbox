@@ -105,7 +105,7 @@ stages:
 .siconos-configure:
   extends: .siconos-ctest
   variables:
-    ctest_mode: configure
+    ctest_mode: 'configure'
   stage: configure
 
 
@@ -116,7 +116,7 @@ stages:
 .siconos-build:
   extends: .siconos-ctest
   variables:
-    ctest_mode: build
+    ctest_mode: 'build'
     GIT_STRATEGY: none
   stage: build
 
@@ -127,6 +127,6 @@ stages:
 .siconos-test:
   extends: .siconos-ctest
   variables:
-    ctest_mode: tests
+    ctest_mode: 'tests'
     GIT_STRATEGY: none
   stage: test
