@@ -61,6 +61,7 @@ build:ubuntu18.04:
     user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
     GIT_STRATEGY: none
   extends: .siconos-build
+  dependencies: configure:ubuntu18.04
   artifacts:
     paths:
       - $CI_PROJECT_DIR
@@ -71,6 +72,7 @@ test:ubuntu18.04:
     cdash_submit: 1
     user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
     GIT_STRATEGY: none
+  dependencies: build:ubuntu18.04
   extends: .siconos-test
   artifacts:
     paths:
