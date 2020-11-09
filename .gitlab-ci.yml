@@ -51,13 +51,14 @@ configure:ubuntu18.04:
       - $CI_PROJECT_DIR
     when: always
     reports:
-      junit: $CI_PROJECT_DIR/build/Testing/my-cunit-test.xml
+      junit: $CI_PROJECT_DIR/build/Testing/Build.xml
 
 build:ubuntu18.04:
   variables:
     IMAGE_NAME: $CI_REGISTRY_IMAGE/ubuntu18.04
     cdash_submit: 1
     user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
+    GIT_STRATEGY: none
   extends: .siconos-build
   artifacts:
     paths:
@@ -68,6 +69,7 @@ test:ubuntu18.04:
     IMAGE_NAME: $CI_REGISTRY_IMAGE/ubuntu18.04
     cdash_submit: 1
     user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
+    GIT_STRATEGY: none
   extends: .siconos-test
   artifacts:
     paths:
