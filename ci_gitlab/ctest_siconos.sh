@@ -26,7 +26,7 @@ ctest_mode=$1
 user_file=$2
 
 echo "${ctest_mode} and ${user_file}"
-if [ $1 == "configure" ] || [ $1 == "all" ]
+if [ $1 = "configure" ] || [ $1 = "all" ]
 then
     rm -rf $CI_PROJECT_DIR/build
     mkdir -p $CI_PROJECT_DIR/build
