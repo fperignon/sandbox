@@ -129,4 +129,4 @@ stages:
   variables:
     ctest_mode: tests
     GIT_STRATEGY: none
-  stage: tests
+  stage: test
