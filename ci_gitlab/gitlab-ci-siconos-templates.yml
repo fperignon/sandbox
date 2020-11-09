@@ -104,6 +104,8 @@ stages:
   image: $IMAGE_NAME
   stage: build
   script:
+    - echo $CI_COMMIT_REF_NAME
+    - date
     - "sh ci_gitlab/build_siconos.sh $user_file" 
 
 # -- Template for siconos build-test-install jobs --
@@ -114,4 +116,6 @@ stages:
   image: $IMAGE_NAME
   stage: test
   script:
+    - echo $CI_COMMIT_REF_NAME
+    - date
     - "sh ci_gitlab/install_siconos.sh $user_file" 
