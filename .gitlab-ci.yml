@@ -1,7 +1,7 @@
 # Templates for ci jobs
 include: 
   - ci_gitlab/gitlab-ci-siconos-templates.yml
-  - template: Code-Quality.gitlab-ci.yml
+  #- template: Code-Quality.gitlab-ci.yml
 
 job2:
   stage: build
@@ -32,10 +32,10 @@ metrics:
       metrics: metrics.txt
 
 
-code_quality:
-  stage: test
-  artifacts:
-    paths: [gl-code-quality-report.json]
+#code_quality:
+#  stage: test
+#  artifacts:
+#    paths: [gl-code-quality-report.json]
     
 # Siconos build and install, default config
 # (based on cmake/default_siconos.cmake)
