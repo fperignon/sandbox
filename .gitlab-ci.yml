@@ -3,22 +3,22 @@ include:
   - ci_gitlab/gitlab-ci-siconos-templates.yml
   #- template: Code-Quality.gitlab-ci.yml
 
-job2:
-  stage: build
-  #allow_failure: false
-  script:
-    - echo "bonjour"
-  only:
-    - master
+#job2:
+#  stage: build
+#  #allow_failure: false
+#  script:
+#    - echo "bonjour"
+#  only:
+#    - master
 
-job3:
-  stage: test
-  #allow_failure: false
-  script:
-    - echo "bonjour"
-  dependencies: [job2]
-  only:
-    - master
+#job3:
+#  stage: test
+#  #allow_failure: false
+#  script:
+#    - echo "bonjour"
+#  dependencies: [job2]
+#  only:
+#    - master
 
 # ---- Siconos build jobs -----
 
