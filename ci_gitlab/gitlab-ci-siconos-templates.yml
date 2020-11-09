@@ -105,7 +105,7 @@ stages:
 .siconos-configure:
   extends: .siconos-ctest
   variables:
-    ctest_mode: configure
+    ctest_mode: all
   stage: configure
 
 
