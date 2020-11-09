@@ -73,10 +73,7 @@ if(NOT CTEST_SITE)
   set(CTEST_SITE "${OSNAME} ${osrelease}, ${osplatform}, ${hostname}")
 endif()
 
-#if(${JOB_MODE} EQUAL -1)
-
-
-if(${JOB_MODE} EQUAL 0)
+if(${CTEST_MODE} STREQUAL "configure" OR ${CTEST_MODE} STREQUAL "all")
 
   ctest_start(${model})
 
@@ -89,34 +86,25 @@ if(${JOB_MODE} EQUAL 0)
 
   message("\n\n=============== Start ctest_configure =============== ")
   message("- Configure command line :\n ${CTEST_CONFIGURE_COMMAND}\n")
-  if(CDASH_SUBMIT)
-    message("- Results will be submitted to cdash server, ${CTEST_DROP_SITE}")
-  else()
-    message("- Results won't be submitted to a cdash server.\n")
-  endif()
-
 
   ctest_configure(
     RETURN_VALUE CONFIGURE_RESULT
     CAPTURE_CMAKE_ERROR CONFIGURE_STATUS
-    QUIET
+    #QUIET
     )
 
   message("=============== End of ctest_configure =============== ")
   message("------> Configure status/result : ${CONFIGURE_STATUS}/${CONFIGURE_RESULT}")
-   if(CDASH_SUBMIT)
-      ctest_submit()#PARTS Configure)
-    endif()
   if(NOT CONFIGURE_STATUS EQUAL 0 OR NOT CONFIGURE_RESULT EQUAL 0)
-#    if(CDASH_SUBMIT)
-#      ctest_submit(PARTS Configure)
- #   endif()
     message(FATAL_ERROR "\n\n *** Configure (cmake) process failed *** \n\n")
   endif()
+endif()
 
-elseif(${JOB_MODE} EQUAL 1)
+if(${CTEST_MODE} STREQUAL "build" OR ${CTEST_MODE} STREQUAL "all")
 
-  ctest_start(APPEND)
+  if(${CTEST_MODE} STREQUAL "build")
+    ctest_start(APPEND) # Restart from existing (configure step) cdash config
+  endif()
   # --- Build ---
 
   if(NOT CTEST_BUILD_CONFIGURATION)
@@ -133,18 +121,17 @@ elseif(${JOB_MODE} EQUAL 1)
     )
   message("=============== End of ctest_build =============== ")
   message("------> Build status/result : ${BUILD_STATUS}/${BUILD_RESULT}")
-    if(CDASH_SUBMIT)
-      ctest_submit()#PARTS  Build)
-    endif()
   if(NOT BUILD_STATUS EQUAL 0 OR NOT BUILD_RESULT EQUAL 0)
-   # if(CDASH_SUBMIT)
-   #   ctest_submit(PARTS Configure Build)
-   # endif()
     message(FATAL_ERROR " *** Build (make) process failed *** ")
   endif()
-elseif(${JOB_MODE} EQUAL 2)
+endif()
+
+if(${CTEST_MODE} STREQUAL "tests" OR ${CTEST_MODE} STREQUAL "all")
   # -- Tests --
-  ctest_start(APPEND)
+  
+  if(${CTEST_MODE} STREQUAL "tests")
+    ctest_start(APPEND)
+  endif()
   message("\n\n=============== Start ctest_test (nbprocs = ${NP}) =============== ")
   ctest_test(
     PARALLEL_LEVEL NP
@@ -172,49 +159,46 @@ elseif(${JOB_MODE} EQUAL 2)
   #   set(CTEST_MEMORYCHECK_COMMAND_OPTIONS "--quiet --leak-check=full --show-reachable=yes --error-limit=no --gen-suppressions=all") 
   #   ctest_memcheck(PARALLEL_LEVEL NP QUIET)
   # endif()
-  if(NOT CDASH_SUBMIT)
-    return()
-  endif()
+  message("=============== End of ctest_test =============== ")
 
-  #elseif(${JOB_MODE} GREATER_EQUAL 2)
-  # -- Submission to cdash --
+endif()
+
+if(CDASH_SUBMIT)
   message("\n\n=============== Start ctest_submit =============== ")
+  message("- Results will be submitted to cdash server, ${CTEST_DROP_SITE}")
+  # -- Submission to cdash --
   file(GLOB SUBMIT_FILES ${CTEST_BINARY_DIRECTORY}/Testing/*/*)
   message(STATUS "submit files : ${SUBMIT_FILES}")
   message(STATUS "PATH : ${CTEST_BINARY_DIRECTORY}")
-
+  
   ctest_submit(
-   # FILES ${SUBMIT_FILES}
-    #   PARTS Configure
-    #   CAPTURE_CMAKE_ERROR  SUBMISSION_STATUS)
-    # ctest_submit(
-    #   PARTS Build
-    #   CAPTURE_CMAKE_ERROR  SUBMISSION_STATUS)
-    # ctest_submit(
-    #PARTS Test
-    CAPTURE_CMAKE_ERROR  SUBMISSION_STATUS
-    #RETRY_COUNT 4 # Retry 4 times, if submission failed ...)
-    #  RETRY_DELAY 1 # seconds
-    )
-  message("=============== End of ctest_test =============== ")
+  # FILES ${SUBMIT_FILES}
+  SUBMIT_URL "http://my.cdash.org/submit.php?project=sandbox"
+  BUILD_ID buildid
+  RETURN_VALUE confret
+  CAPTURE_CMAKE_ERROR SUBMISSION_STATUS
+  )
+
+else()
+  message("- Results won't be submitted to a cdash server.\n")
+  return()
 endif()
+
 
 # ============= Summary =============
 message(STATUS "\n============================================ Summary ============================================")
 message(STATUS "CTest process for ${current_project} has ended.")
 message(STATUS "Ctest model is: ${model}")
 message(STATUS "Ctest executed on sources directory : ${CTEST_SOURCE_DIRECTORY}")
-message(STATUS "Build name (cdash) : ${CTEST_BUILD_NAME}")
-message(STATUS "Site (cdash) : ${CTEST_SITE}")
+if(CDASH_SUBMIT)
+  message(STATUS "Build name (cdash) : ${CTEST_BUILD_NAME}")
+  message(STATUS "Site (cdash) : ${CTEST_SITE}")
+endif()
 message(STATUS "=================================================================================================\n")
 
-if(JOB_MODE GREATER_EQUAL 2)
+if(CTEST_MODE STREQUAL "tests")
   # tests failed?
   if(NOT TEST_STATUS EQUAL 0 OR NOT TEST_RESULT EQUAL 0)
     message(FATAL_ERROR " *** test failure *** ")
   endif()
 endif()
-# -- Submission failed? --
-# if(NOT SUBMISSION_STATUS EQUAL 0)
-#   message(WARNING " *** submission failure *** ")
-# endif()

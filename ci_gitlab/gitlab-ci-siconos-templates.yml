@@ -87,13 +87,26 @@ stages:
 # - Pull an image (possibly from siconos registry)
 #   named  IMAGE_NAME
 # - Run for all branches and for all push
-.siconos-configure:
+.siconos-ctest:
   image: $IMAGE_NAME
-  stage: configure
   script:
     - echo $CI_COMMIT_REF_NAME
     - date
-    - "sh ci_gitlab/configure_siconos.sh $user_file" 
+    - "sh ci_gitlab/ctest_siconos.sh $ctest_mode $user_file" 
+  artifacts:
+    paths:
+      - $CI_PROJECT_DIR
+    expire_in: 2 days  
+
+# -- Template for siconos build-test-install jobs --
+# - Pull an image (possibly from siconos registry)
+#   named  IMAGE_NAME
+# - Run for all branches and for all push
+.siconos-configure:
+  extends: .siconos-ctest
+  variables:
+    ctest_mode: configure
+  stage: configure
 
 
 # -- Template for siconos build-test-install jobs --
@@ -101,21 +114,19 @@ stages:
 #   named  IMAGE_NAME
 # - Run for all branches and for all push
 .siconos-build:
-  image: $IMAGE_NAME
+  extends: .siconos-ctest
+  variables:
+    ctest_mode: build
+    GIT_STRATEGY: none
   stage: build
-  script:
-    - echo $CI_COMMIT_REF_NAME
-    - date
-    - "sh ci_gitlab/build_siconos.sh $user_file" 
 
 # -- Template for siconos build-test-install jobs --
 # - Pull an image (possibly from siconos registry)
 #   named  IMAGE_NAME
 # - Run for all branches and for all push
 .siconos-test:
-  image: $IMAGE_NAME
-  stage: test
-  script:
-    - echo $CI_COMMIT_REF_NAME
-    - date
-    - "sh ci_gitlab/install_siconos.sh $user_file" 
+  extends: .siconos-ctest
+  variables:
+    ctest_mode: tests
+    GIT_STRATEGY: none
+  stage: tests
