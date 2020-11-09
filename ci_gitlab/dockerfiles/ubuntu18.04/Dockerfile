@@ -1,4 +1,4 @@
-FROM gricad-registry.univ-grenoble-alpes.fr/nonsmooth/siconos/ubuntu18.04-no-python
+FROM gricad-registry.univ-grenoble-alpes.fr/ced2019/siconos/ubuntu18.04-no-python
 RUN apt update  && apt install -y -qq \
         swig \
         doxygen \
