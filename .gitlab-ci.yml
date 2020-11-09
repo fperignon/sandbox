@@ -38,11 +38,11 @@ run_rats:
   - rats -l 'c' ./kernel/src/modelingTools/* >> rats.txt
   - test $(grep -c 'High' rats.txt) -eq 0
   artifacts:
-  when: always
-  untracked: true
-  paths:
-  - ./kernel/src/modelingTools/*
-  - ./.gitlab-ci.yml
+    when: always
+    untracked: true
+    paths:
+    - ./kernel/src/modelingTools/*
+    - ./.gitlab-ci.yml
 
 
 # Siconos build and install, default config
