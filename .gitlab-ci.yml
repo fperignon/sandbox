@@ -61,6 +61,7 @@ build:ubuntu18.04:
     user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
     GIT_STRATEGY: none
   extends: .siconos-build
+  when : manual
   dependencies:
     - configure:ubuntu18.04
   artifacts:

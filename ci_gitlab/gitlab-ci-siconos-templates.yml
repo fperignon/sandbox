@@ -92,6 +92,7 @@ stages:
   stage: configure
   script:
     - echo $CI_COMMIT_REF_NAME
+    - date
     - "sh ci_gitlab/configure_siconos.sh $user_file" 
 
 
