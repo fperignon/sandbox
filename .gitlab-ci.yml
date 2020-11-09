@@ -29,7 +29,13 @@ metrics:
     reports:
       metrics: metrics.txt
 
+include:
+  - template: Code-Quality.gitlab-ci.yml
 
+code_quality:
+  artifacts:
+    paths: [gl-code-quality-report.json]
+    
 # Siconos build and install, default config
 # (based on cmake/default_siconos.cmake)
 # on ubuntu 18.04.
