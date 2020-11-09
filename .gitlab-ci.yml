@@ -49,7 +49,7 @@ configure:ubuntu18.04:
   artifacts:
     paths:
       - $CI_PROJECT_DIR
-    when: always
+    #when: always
     reports:
       junit: $CI_PROJECT_DIR/build/Testing/Build.xml
 
