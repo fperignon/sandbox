@@ -85,16 +85,16 @@ if(WITH_${COMPONENT}_TESTING)
   # Start tests for Relay dir.
   begin_tests(src/Relay/test)
 
-  new_tests_collection(
-    DRIVER relay_test_collection.c.in FORMULATION relay COLLECTION TEST_RELAY_COLLECTION_1
-    EXTRA_SOURCES data_collection_1.c)
+  #new_tests_collection(
+  #  DRIVER relay_test_collection.c.in FORMULATION relay COLLECTION TEST_RELAY_COLLECTION_1
+  #  EXTRA_SOURCES data_collection_1.c)
 
   # ----------- MLCP solvers tests -----------
-  # begin_tests(src/MLCP/test)
+  #begin_tests(src/MLCP/test)
 
-  # new_tests_collection(
-  #   DRIVER mlcp_test_collection.c.in FORMULATION mlcp COLLECTION TEST_MLCP_COLLECTION_1
-  #   EXTRA_SOURCES data_collection_1.c)
+  #new_tests_collection(
+	   #   DRIVER mlcp_test_collection.c.in FORMULATION mlcp COLLECTION TEST_MLCP_COLLECTION_1
+	   #EXTRA_SOURCES data_collection_1.c)
 
   # new_tests_collection(
   #   DRIVER mlcp_test_collection.c.in FORMULATION mlcp COLLECTION TEST_MLCP_COLLECTION_2
@@ -104,9 +104,9 @@ if(WITH_${COMPONENT}_TESTING)
   #   DRIVER mlcp_test_collection.c.in FORMULATION mlcp COLLECTION TEST_MLCP_COLLECTION_3
   #   EXTRA_SOURCES data_collection_3.c)
 
-  # new_tests_collection(
-  #   DRIVER mlcp_test_collection.c.in FORMULATION mlcp COLLECTION TEST_MLCP_COLLECTION_4
-  #   EXTRA_SOURCES data_collection_4.c)
+  #new_tests_collection(
+  #DRIVER mlcp_test_collection.c.in FORMULATION mlcp COLLECTION TEST_MLCP_COLLECTION_4
+     ##   EXTRA_SOURCES data_collection_4.c)
 
 
   # if(HAVE_SYSTIMES_H AND WITH_CXX)
