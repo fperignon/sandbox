@@ -65,21 +65,21 @@ if(WITH_${COMPONENT}_TESTING)
   
   new_test(NAME lcp_test_DefaultSolverOptions SOURCES LinearComplementarity_DefaultSolverOptions_test.c)
 
-  new_tests_collection(
-    DRIVER lcp_test_collection.c.in FORMULATION lcp COLLECTION TEST_LCP_COLLECTION_1
-    EXTRA_SOURCES data_collection_1.c)
-  new_tests_collection(
-    DRIVER lcp_test_collection.c.in FORMULATION lcp COLLECTION TEST_LCP_COLLECTION_2
-    EXTRA_SOURCES data_collection_2.c)
-  new_tests_collection(
-    DRIVER lcp_test_collection.c.in FORMULATION lcp COLLECTION TEST_LCP_COLLECTION_3
-    EXTRA_SOURCES data_collection_3.c)
-  new_tests_collection(
-    DRIVER lcp_test_collection.c.in FORMULATION lcp COLLECTION TEST_LCP_COLLECTION_4
-    EXTRA_SOURCES data_collection_4.c)
-  new_tests_collection(
-    DRIVER lcp_test_collection.c.in FORMULATION lcp COLLECTION TEST_LCP_COLLECTION_5
-    EXTRA_SOURCES data_collection_5.c)
+  #new_tests_collection(
+  #  DRIVER lcp_test_collection.c.in FORMULATION lcp COLLECTION TEST_LCP_COLLECTION_1
+  #  EXTRA_SOURCES data_collection_1.c)
+  ##new_tests_collection(
+  #  DRIVER lcp_test_collection.c.in FORMULATION lcp COLLECTION TEST_LCP_COLLECTION_2
+  #  EXTRA_SOURCES data_collection_2.c)
+  #new_tests_collection(
+  #  DRIVER lcp_test_collection.c.in FORMULATION lcp COLLECTION TEST_LCP_COLLECTION_3
+  #  EXTRA_SOURCES data_collection_3.c)
+  #new_tests_collection(
+  #  DRIVER lcp_test_collection.c.in FORMULATION lcp COLLECTION TEST_LCP_COLLECTION_4
+  #  EXTRA_SOURCES data_collection_4.c)
+  #new_tests_collection(
+  #  DRIVER lcp_test_collection.c.in FORMULATION lcp COLLECTION TEST_LCP_COLLECTION_5
+  #  EXTRA_SOURCES data_collection_5.c)
 
   # ----------- Relay solvers tests -----------
   # Start tests for Relay dir.

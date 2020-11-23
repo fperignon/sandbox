@@ -9,7 +9,7 @@
 set(CTEST_PROJECT_NAME "siconos-sandbox")
 set(CTEST_NIGHTLY_START_TIME "20:00:00 CET")
 set(CTEST_DROP_METHOD "http")
-set(CTEST_DROP_SITE "siconos-web.univ-grenoble-alpes.fr")
+set(CTEST_DROP_SITE "siconos-web.univ-grenoble-alpes.fr:8080")
 set(CTEST_DROP_LOCATION "/submit.php?project=siconos-dashboard")
 #set(CTEST_DROP_SITE "siconos-runner-2.univ-grenoble-alpes.fr")
 #set(CTEST_DROP_LOCATION "/submit.php?project=siconos-sandbox")
