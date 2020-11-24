@@ -58,20 +58,20 @@ configure:ubuntu18.04:
      user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
    extends: .siconos-configure
 
-# build:ubuntu18.04:
-#   variables:
-#     IMAGE_NAME: $CI_REGISTRY_IMAGE/ubuntu18.04
-#     cdash_submit: 1
-#     user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
-#   extends: .siconos-build
-#   dependencies:
-#     - configure:ubuntu18.04
+build:ubuntu18.04:
+   variables:
+     IMAGE_NAME: $CI_REGISTRY_IMAGE/ubuntu18.04
+     cdash_submit: 1
+     user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
+   extends: .siconos-build
+   dependencies:
+     - configure:ubuntu18.04
 
-# test:ubuntu18.04:
-#   variables:
-#     IMAGE_NAME: $CI_REGISTRY_IMAGE/ubuntu18.04
-#     cdash_submit: 1
-#     user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
-#   dependencies:
-#     - build:ubuntu18.04
-#   extends: .siconos-test
+test:ubuntu18.04:
+   variables:
+     IMAGE_NAME: $CI_REGISTRY_IMAGE/ubuntu18.04
+     cdash_submit: 1
+     user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
+   dependencies:
+     - build:ubuntu18.04
+   extends: .siconos-test
