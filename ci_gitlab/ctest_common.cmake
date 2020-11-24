@@ -91,7 +91,6 @@ function(set_site_name)
   set(CTEST_SITE "${OSNAME} ${osrelease}, ${osplatform}, ${hostname}" PARENT_SCOPE)
 
 endfunction()
-
 # set build name, according to host, ci, git status ...
 function(set_cdash_build_name)
   # Get hash for commit of current version of Siconos
@@ -115,7 +114,7 @@ function(set_cdash_build_name)
     set(branch_commit "${COMMIT_REF_NAME}/${COMMIT_SHORT_SHA}")
   endif()
   include(${CTEST_SOURCE_DIRECTORY}/cmake/SiconosVersion.cmake)  
-  set(CTEST_BUILD_NAME "Siconos (${SICONOS_VERSION}-devel, branch/commit=${branch_commit}")
+  set(CTEST_BUILD_NAME "Sico (${SICONOS_VERSION}-devel, branch/commit=${branch_commit}")
   if(USER_FILE)
     get_filename_component(_name ${USER_FILE} NAME)
     set(CTEST_BUILD_NAME "${CTEST_BUILD_NAME} - Option file : ${_name}")

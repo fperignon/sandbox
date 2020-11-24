@@ -104,7 +104,6 @@ stages:
     - date
     - env
     - "sh ci_gitlab/ctest_siconos.sh $ctest_mode $user_file" 
-    - rm -rf .git
   artifacts:
     paths:
       - $CI_PROJECT_DIR
