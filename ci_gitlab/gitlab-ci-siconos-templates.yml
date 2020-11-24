@@ -102,6 +102,7 @@ stages:
   script:
     - echo $CI_COMMIT_REF_NAME
     - date
+    - env
     - "sh ci_gitlab/ctest_siconos.sh $ctest_mode $user_file" 
   artifacts:
     paths:

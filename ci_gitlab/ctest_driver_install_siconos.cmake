@@ -36,13 +36,13 @@ include($ENV{CI_PROJECT_DIR}/ci_gitlab/ctest_common.cmake)
 # - Configure -- 
 if(${CTEST_MODE} STREQUAL "Configure" OR ${CTEST_MODE} STREQUAL "all")
 
- # Current testing model. Priority: 
-# Nightly -> set by scheduler on gricad-gitlab
-# Continuous -> set in .gitlab-ci.yml
-# Experimental : default
-if(NOT model)
-  set(model Experimental)
-endif()
+  # Current testing model. Priority: 
+  # Nightly -> set by scheduler on gricad-gitlab
+  # Continuous -> set in .gitlab-ci.yml
+  # Experimental : default
+  if(NOT model)
+    set(model Experimental)
+  endif()
 
   ctest_start(${model})
 
