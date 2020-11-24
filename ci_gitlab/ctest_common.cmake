@@ -56,7 +56,7 @@ endif()
 # With gitlab-ci, runner name is too long and useless ...
 string(FIND ${hostname} "runner-" on_ci) 
 if(on_ci GREATER -1)
-  set(hostname "gitlab-ci runner on $ENV{CI_RUNNER_DESCRIPTION}")
+  set(hostname "runner: $ENV{CI_RUNNER_DESCRIPTION}")
 endif()
 
 # Host description
