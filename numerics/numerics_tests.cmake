@@ -31,7 +31,7 @@ if(WITH_${COMPONENT}_TESTING)
   new_test(SOURCES NM_test.c DEPS "${suitesparse}")
 
   #  tests for JordanAlgebra
-  NEW_TEST(NAME tools_test_JordanAlgebra SOURCES JordanAlgebra_test.c)
+  #NEW_TEST(NAME tools_test_JordanAlgebra SOURCES JordanAlgebra_test.c)
 
   # MUMPS interface tests
   if(WITH_MUMPS)
@@ -39,19 +39,19 @@ if(WITH_${COMPONENT}_TESTING)
   endif()
   
   # Specfic tests for SBM matrices 
-  new_test(SOURCES SBM_test.c DEPS "${suitesparse}")
-  new_test(SOURCES SBCM_to_SBM.c)
+  #new_test(SOURCES SBM_test.c DEPS "${suitesparse}")
+  #new_test(SOURCES SBCM_to_SBM.c)
 
   # Specfic tests for sparse matrices 
-  new_test(SOURCES SparseMatrix_test.c DEPS "${suitesparse}")
+  #new_test(SOURCES SparseMatrix_test.c DEPS "${suitesparse}")
 
-  if(HAS_ONE_LP_SOLVER)
-    new_test(SOURCES vertex_problem.c)
-  endif(HAS_ONE_LP_SOLVER)
+  #if(HAS_ONE_LP_SOLVER)
+  #  new_test(SOURCES vertex_problem.c)
+  #endif(HAS_ONE_LP_SOLVER)
 
   # ----------- LCP solvers tests -----------
   # Start tests for LCP dir.
-  begin_tests(src/LCP/test)
+  #begin_tests(src/LCP/test)
 
   # Two kinds of tests :
   # * those with existing source file ('standards') and those where sources
@@ -63,7 +63,7 @@ if(WITH_${COMPONENT}_TESTING)
   #  in data_collection* files.
   #  Use new_tests_collection function as below.
   
-  new_test(NAME lcp_test_DefaultSolverOptions SOURCES LinearComplementarity_DefaultSolverOptions_test.c)
+  #new_test(NAME lcp_test_DefaultSolverOptions SOURCES LinearComplementarity_DefaultSolverOptions_test.c)
 
   #new_tests_collection(
   #  DRIVER lcp_test_collection.c.in FORMULATION lcp COLLECTION TEST_LCP_COLLECTION_1
@@ -83,7 +83,7 @@ if(WITH_${COMPONENT}_TESTING)
 
   # ----------- Relay solvers tests -----------
   # Start tests for Relay dir.
-  begin_tests(src/Relay/test)
+  #begin_tests(src/Relay/test)
 
   #new_tests_collection(
   #  DRIVER relay_test_collection.c.in FORMULATION relay COLLECTION TEST_RELAY_COLLECTION_1
