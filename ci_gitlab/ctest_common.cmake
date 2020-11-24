@@ -24,9 +24,9 @@ function(post_ctest)
 
   message("------> status/result : ${_STATUS}/${_RESULT}")
   if(${run_PHASE} STREQUAL Configure)
-    set(parts ${run_PHASE} Notes Done)
+    set(parts ${run_PHASE} Notes)
   else()
-    set(parts ${run_PHASE} Done)
+    set(parts ${run_PHASE})
 
   endif()
   if(CDASH_SUBMIT)

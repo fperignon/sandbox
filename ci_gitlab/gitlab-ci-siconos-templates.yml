@@ -106,6 +106,8 @@ stages:
   artifacts:
     paths:
       - $CI_PROJECT_DIR
+    exclude:
+      - $CI_PROJECT_DIR/.git
     expire_in: 2 days  
 
 # -- Template for siconos build-test-install jobs --
