@@ -130,14 +130,14 @@ endif()
 
 
 # -- Tests --
-#message("\n\n=============== Start ctest_test (nbprocs = ${NP}) =============== ")
-#ctest_test(
-#  PARALLEL_LEVEL NP
-#  CAPTURE_CMAKE_ERROR TEST_STATUS
-#  SCHEDULE_RANDOM ON
-#  RETURN_VALUE TEST_RESULT
-##  QUIET
-# )
+message("\n\n=============== Start ctest_test (nbprocs = ${NP}) =============== ")
+ctest_test(
+  #PARALLEL_LEVEL NP
+  CAPTURE_CMAKE_ERROR TEST_STATUS
+  #SCHEDULE_RANDOM ON
+  RETURN_VALUE TEST_RESULT
+#  QUIET
+)
 message("=============== End of ctest_test =============== ")
 message("------> Test status/result : ${TEST_STATUS}/${TEST_RESULT}")
 
@@ -167,7 +167,7 @@ message("\n\n=============== Start ctest_submit =============== ")
 # message(STATUS "submit files : ${SUBMIT_FILES}")
 ctest_submit(
 #  FILES ${SUBMIT_FILES}
-   PARTS Configure Build
+   PARTS Configure Build Test
 #   CAPTURE_CMAKE_ERROR  SUBMISSION_STATUS)
 # ctest_submit(
 #   PARTS Build
