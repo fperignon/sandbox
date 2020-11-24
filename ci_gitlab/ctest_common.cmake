@@ -113,20 +113,20 @@ endif()
 
 message("\n\n=============== Start ctest_build =============== ")
 
-#ctest_build(
-#  PROJECT_NAME ${current_project}
-#  CAPTURE_CMAKE_ERROR BUILD_STATUS
-#  RETURN_VALUE BUILD_RESULT
-#  #QUIET if quiet, travis failed because of missing outputs during a long time ...
-#  )
-#message("=============== End of ctest_build =============== ")
-#message("------> Build status/result : ${BUILD_STATUS}/${BUILD_RESULT}")
-##if(NOT BUILD_STATUS EQUAL 0 OR NOT BUILD_RESULT EQUAL 0)
-#  if(CDASH_SUBMIT)
-#    ctest_submit(PARTS Configure Build)
-#  endif()
-#  message(FATAL_ERROR " *** Build (make) process failed *** ")
-#endif()
+ctest_build(
+  PROJECT_NAME ${current_project}
+  CAPTURE_CMAKE_ERROR BUILD_STATUS
+  RETURN_VALUE BUILD_RESULT
+  #QUIET if quiet, travis failed because of missing outputs during a long time ...
+    )
+message("=============== End of ctest_build =============== ")
+message("------> Build status/result : ${BUILD_STATUS}/${BUILD_RESULT}")
+if(NOT BUILD_STATUS EQUAL 0 OR NOT BUILD_RESULT EQUAL 0)
+  if(CDASH_SUBMIT)
+    ctest_submit(PARTS Configure Build)
+  endif()
+  message(FATAL_ERROR " *** Build (make) process failed *** ")
+endif()
 
 
 # -- Tests --
