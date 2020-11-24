@@ -141,28 +141,29 @@ ctest_test(
 message("=============== End of ctest_test =============== ")
 message("------> Test status/result : ${TEST_STATUS}/${TEST_RESULT}")
 
-#if(WITH_MEMCHECK AND CTEST_COVERAGE_COMMAND)
-find_program(CTEST_COVERAGE_COMMAND NAMES gcov)
-#set(CTEST_COVERAGE_COMMAND gcov)
+if(WITH_MEMCHECK AND CTEST_COVERAGE_COMMAND)
+  find_program(CTEST_COVERAGE_COMMAND NAMES gcov)
+# set(CTEST_COVERAGE_COMMAND gcov)
 
   ctest_coverage(
     CAPTURE_CMAKE_ERROR COVERAGE_STATUS
     RETURN_VALUE COVERAGE_RESULT  
   )
+  endif()
+
+#if(WITH_MEMCHECK AND CTEST_MEMORYCHECK_COMMAND)
+#  ctest_memcheck()
 #endif()
-if(WITH_MEMCHECK AND CTEST_MEMORYCHECK_COMMAND)
-  ctest_memcheck()
-endif()
 
 # error status check later, we try to submit even if tests failed.
 
 # -- memory check -- Skip this to 'enlight' submit process, since cdash inria is overbooked ...
-#if(CTEST_BUILD_CONFIGURATION MATCHES "Profiling")
-find_program(CTEST_MEMORYCHECK_COMMAND NAMES valgrind)
-set(CTEST_MEMORYCHECK_COMMAND_OPTIONS "--quiet --leak-check=full --show-leak-kinds=definite,possible --track-origins=yes --error-limit=no --gen-suppressions=all") 
-set(CTEST_MEMORYCHECK_COMMAND_OPTIONS "--quiet --leak-check=full --show-reachable=yes --error-limit=no --gen-suppressions=all") 
-ctest_memcheck(PARALLEL_LEVEL NP QUIET)
-# endif()
+if(CTEST_BUILD_CONFIGURATION MATCHES "Profiling")
+  find_program(CTEST_MEMORYCHECK_COMMAND NAMES valgrind)
+  set(CTEST_MEMORYCHECK_COMMAND_OPTIONS "--quiet --leak-check=full --show-leak-kinds=definite,possible --track-origins=yes --error-limit=no   --gen-suppressions=all") 
+  set(CTEST_MEMORYCHECK_COMMAND_OPTIONS "--quiet --leak-check=full --show-reachable=yes --error-limit=no --gen-suppressions=all") 
+  ctest_memcheck(PARALLEL_LEVEL NP QUIET)
+endif()
 if(NOT CDASH_SUBMIT)
   return()
 endif()
@@ -173,7 +174,7 @@ message("\n\n=============== Start ctest_submit =============== ")
 # message(STATUS "submit files : ${SUBMIT_FILES}")
 ctest_submit(
 #  FILES ${SUBMIT_FILES}
-   PARTS Configure Build Test Coverage MemCheck
+   PARTS Configure Build Test
 #   CAPTURE_CMAKE_ERROR  SUBMISSION_STATUS)
 # ctest_submit(
 #   PARTS Build
