@@ -93,7 +93,7 @@ endif()
 ctest_configure(
   RETURN_VALUE CONFIGURE_RESULT
   CAPTURE_CMAKE_ERROR CONFIGURE_STATUS
-  QUIET
+  #QUIET
   )
 
 message("=============== End of ctest_configure =============== ")
@@ -113,31 +113,31 @@ endif()
 
 message("\n\n=============== Start ctest_build =============== ")
 
-ctest_build(
-  PROJECT_NAME ${current_project}
-  CAPTURE_CMAKE_ERROR BUILD_STATUS
-  RETURN_VALUE BUILD_RESULT
-  #QUIET if quiet, travis failed because of missing outputs during a long time ...
-  )
-message("=============== End of ctest_build =============== ")
-message("------> Build status/result : ${BUILD_STATUS}/${BUILD_RESULT}")
-if(NOT BUILD_STATUS EQUAL 0 OR NOT BUILD_RESULT EQUAL 0)
-  if(CDASH_SUBMIT)
-    ctest_submit(PARTS Configure Build)
-  endif()
-  message(FATAL_ERROR " *** Build (make) process failed *** ")
-endif()
+#ctest_build(
+#  PROJECT_NAME ${current_project}
+#  CAPTURE_CMAKE_ERROR BUILD_STATUS
+#  RETURN_VALUE BUILD_RESULT
+#  #QUIET if quiet, travis failed because of missing outputs during a long time ...
+#  )
+#message("=============== End of ctest_build =============== ")
+#message("------> Build status/result : ${BUILD_STATUS}/${BUILD_RESULT}")
+##if(NOT BUILD_STATUS EQUAL 0 OR NOT BUILD_RESULT EQUAL 0)
+#  if(CDASH_SUBMIT)
+#    ctest_submit(PARTS Configure Build)
+#  endif()
+#  message(FATAL_ERROR " *** Build (make) process failed *** ")
+#endif()
 
 
 # -- Tests --
-message("\n\n=============== Start ctest_test (nbprocs = ${NP}) =============== ")
-ctest_test(
-  PARALLEL_LEVEL NP
-  CAPTURE_CMAKE_ERROR TEST_STATUS
-  SCHEDULE_RANDOM ON
-  RETURN_VALUE TEST_RESULT
-  QUIET
-  )
+#message("\n\n=============== Start ctest_test (nbprocs = ${NP}) =============== ")
+#ctest_test(
+#  PARALLEL_LEVEL NP
+#  CAPTURE_CMAKE_ERROR TEST_STATUS
+#  SCHEDULE_RANDOM ON
+#  RETURN_VALUE TEST_RESULT
+##  QUIET
+# )
 message("=============== End of ctest_test =============== ")
 message("------> Test status/result : ${TEST_STATUS}/${TEST_RESULT}")
 
@@ -167,7 +167,7 @@ message("\n\n=============== Start ctest_submit =============== ")
 # message(STATUS "submit files : ${SUBMIT_FILES}")
 ctest_submit(
 #  FILES ${SUBMIT_FILES}
-#   PARTS Configure
+   PARTS Configure
 #   CAPTURE_CMAKE_ERROR  SUBMISSION_STATUS)
 # ctest_submit(
 #   PARTS Build
