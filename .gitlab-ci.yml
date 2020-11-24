@@ -22,14 +22,14 @@ include:
 
 # ---- Siconos build jobs -----
 
-metrics:
-  image: $CI_REGISTRY_IMAGE/ubuntu18.04
-  stage: docker-build
-  script:
-    - echo 'metric_name metric_value' > metrics.txt
-  artifacts:
-    reports:
-      metrics: metrics.txt
+# metrics:
+#   image: $CI_REGISTRY_IMAGE/ubuntu18.04
+#   stage: docker-build
+#   script:
+#     - echo 'metric_name metric_value' > metrics.txt
+#   artifacts:
+#     reports:
+#       metrics: metrics.txt
 
 
 #code_quality:

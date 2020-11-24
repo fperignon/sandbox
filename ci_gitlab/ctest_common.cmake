@@ -167,7 +167,7 @@ message("\n\n=============== Start ctest_submit =============== ")
 # message(STATUS "submit files : ${SUBMIT_FILES}")
 ctest_submit(
 #  FILES ${SUBMIT_FILES}
-   PARTS Configure
+   PARTS Configure Build
 #   CAPTURE_CMAKE_ERROR  SUBMISSION_STATUS)
 # ctest_submit(
 #   PARTS Build
