@@ -104,10 +104,10 @@ stages:
     - date
     - env
     - "sh ci_gitlab/ctest_siconos.sh $ctest_mode $user_file" 
+    - rm -rf .git
   artifacts:
     paths:
-      - $CI_PROJECT_DIR/build
-      - $CI_PROJECT_DIR/Testing
+      - $CI_PROJECT_DIR
     #exclude:
     #  - $CI_PROJECT_DIR/.*git
     expire_in: 2 days  
@@ -131,7 +131,7 @@ stages:
   extends: .siconos-ctest
   variables:
     ctest_mode: Build
-    GIT_STRATEGY: fetch
+    GIT_STRATEGY: none
   stage: build
 
 # -- Template for siconos build-test-install jobs --
@@ -142,6 +142,6 @@ stages:
   extends: .siconos-ctest
   variables:
     ctest_mode: Test
-    GIT_STRATEGY: fetch
+    GIT_STRATEGY: none
   stage: test
 
