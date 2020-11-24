@@ -33,10 +33,10 @@ cmake_host_system_information(RESULT hostname QUERY HOSTNAME)
 cmake_host_system_information(RESULT fqdn QUERY FQDN)
 cmake_host_system_information(RESULT NP QUERY NUMBER_OF_LOGICAL_CORES)
 
-if(NOT DEFINED ALLOW_PARALLEL_BUILD)
-  set(ALLOW_PARALLEL_BUILD ON)
-endif()
-option(ALLOW_PARALLEL_BUILD "Allow parallel build" ${ALLOW_PARALLEL_BUILD})
+# if(NOT DEFINED ALLOW_PARALLEL_BUILD)
+#   set(ALLOW_PARALLEL_BUILD ON)
+# endif()
+# option(ALLOW_PARALLEL_BUILD "Allow parallel build" ${ALLOW_PARALLEL_BUILD})
 if(NOT ALLOW_PARALLEL_BUILD)
   set(NP 1)
 endif()
@@ -66,141 +66,150 @@ endif()
 
 string(REPLACE
   "gricad-registry.univ-grenoble-alpes.fr/nonsmooth/siconos/"
-  "Siconos registry, "
+  "registry, "
   OSNAME ${OSNAME})
 
 if(NOT CTEST_SITE)
   set(CTEST_SITE "${OSNAME} ${osrelease}, ${osplatform}, ${hostname}")
 endif()
 
-ctest_start(${model})
+if(${CTEST_MODE} STREQUAL "configure" OR ${CTEST_MODE} STREQUAL "all")
 
-# Set CTEST_CONFIGURE_COMMAND to cmake followed by siconos options 
-set(CTEST_CONFIGURE_COMMAND ${CMAKE_COMMAND})
-foreach(option IN LISTS SICONOS_CMAKE_OPTIONS)
-  set(CTEST_CONFIGURE_COMMAND "${CTEST_CONFIGURE_COMMAND} ${option}")
-endforeach()
-set(CTEST_CONFIGURE_COMMAND "${CTEST_CONFIGURE_COMMAND} ${CTEST_SOURCE_DIRECTORY}")
+  ctest_start(${model})
 
-message("\n\n=============== Start ctest_configure =============== ")
-message("- Configure command line :\n ${CTEST_CONFIGURE_COMMAND}\n")
+  # Set CTEST_CONFIGURE_COMMAND to cmake followed by siconos options 
+  set(CTEST_CONFIGURE_COMMAND ${CMAKE_COMMAND})
+  foreach(option IN LISTS SICONOS_CMAKE_OPTIONS)
+    set(CTEST_CONFIGURE_COMMAND "${CTEST_CONFIGURE_COMMAND} ${option}")
+  endforeach()
+  set(CTEST_CONFIGURE_COMMAND "${CTEST_CONFIGURE_COMMAND} ${CTEST_SOURCE_DIRECTORY}")
+
+  message("\n\n=============== Start ctest_configure =============== ")
+  message("- Configure command line :\n ${CTEST_CONFIGURE_COMMAND}\n")
+
+  ctest_configure(
+    RETURN_VALUE CONFIGURE_RESULT
+    CAPTURE_CMAKE_ERROR CONFIGURE_STATUS
+    #QUIET
+    )
+
+  message("=============== End of ctest_configure =============== ")
+  message("------> Configure status/result : ${CONFIGURE_STATUS}/${CONFIGURE_RESULT}")
+  if(NOT CONFIGURE_STATUS EQUAL 0 OR NOT CONFIGURE_RESULT EQUAL 0)
+    message(FATAL_ERROR "\n\n *** Configure (cmake) process failed *** \n\n")
+  endif()
+endif()
+
+if(${CTEST_MODE} STREQUAL "build" OR ${CTEST_MODE} STREQUAL "all")
+
+  if(${CTEST_MODE} STREQUAL "build")
+    ctest_start(APPEND) # Restart from existing (configure step) cdash config
+  endif()
+  # --- Build ---
+
+  if(NOT CTEST_BUILD_CONFIGURATION)
+    set(CTEST_BUILD_CONFIGURATION "Release")
+  endif()
+
+  message("\n\n=============== Start ctest_build =============== ")
+
+  ctest_build(
+    PROJECT_NAME ${current_project}
+    CAPTURE_CMAKE_ERROR BUILD_STATUS
+    RETURN_VALUE BUILD_RESULT
+    #QUIET if quiet, travis failed because of missing outputs during a long time ...
+    )
+  message("=============== End of ctest_build =============== ")
+  message("------> Build status/result : ${BUILD_STATUS}/${BUILD_RESULT}")
+  if(NOT BUILD_STATUS EQUAL 0 OR NOT BUILD_RESULT EQUAL 0)
+    message(FATAL_ERROR " *** Build (make) process failed *** ")
+  endif()
+endif()
+
+if(${CTEST_MODE} STREQUAL "tests" OR ${CTEST_MODE} STREQUAL "all")
+  # -- Tests --
+  
+  if(${CTEST_MODE} STREQUAL "tests")
+    ctest_start(APPEND)
+  endif()
+  message("\n\n=============== Start ctest_test (nbprocs = ${NP}) =============== ")
+  ctest_test(
+    #PARALLEL_LEVEL NP
+    CAPTURE_CMAKE_ERROR TEST_STATUS
+    #SCHEDULE_RANDOM ON
+    RETURN_VALUE TEST_RESULT
+    # QUIET
+    )
+  message("=============== End of ctest_test =============== ")
+  message("------> Test status/result : ${TEST_STATUS}/${TEST_RESULT}")
+
+  if(WITH_MEMCHECK AND CTEST_COVERAGE_COMMAND)
+    #find_program(CTEST_COVERAGE_COMMAND NAMES gcov)
+    # set(CTEST_COVERAGE_COMMAND gcov)
+
+    ctest_coverage(
+      CAPTURE_CMAKE_ERROR COVERAGE_STATUS
+      RETURN_VALUE COVERAGE_RESULT  
+      )
+  endif()
+
+  if(WITH_MEMCHECK AND CTEST_MEMORYCHECK_COMMAND)
+    ctest_memcheck()
+  endif()
+
+  # error status check later, we try to submit even if tests failed.
+
+  # -- memory check -- Skip this to 'enlight' submit process, since cdash inria is overbooked ...
+  # if(CTEST_BUILD_CONFIGURATION MATCHES "Profiling")
+  #   find_program(CTEST_MEMORYCHECK_COMMAND NAMES valgrind)
+  #   set(CTEST_MEMORYCHECK_COMMAND_OPTIONS "--quiet --leak-check=full --show-leak-kinds=definite,possible --track-origins=yes --error-limit=no --gen-suppressions=all") 
+  #   set(CTEST_MEMORYCHECK_COMMAND_OPTIONS "--quiet --leak-check=full --show-reachable=yes --error-limit=no --gen-suppressions=all") 
+  #   ctest_memcheck(PARALLEL_LEVEL NP QUIET)
+  # endif()
+  message("=============== End of ctest_test =============== ")
+
+endif()
+
 if(CDASH_SUBMIT)
-  message("- Results will be submitted to cdash server, ${CTEST_DROP_SITE}.")
+  message("\n\n=============== Start ctest_submit =============== ")
+  message("- Results will be submitted to cdash server, ${CTEST_DROP_SITE}")
+  # -- Submission to cdash --
+  # file(GLOB SUBMIT_FILES ${CTEST_BINARY_DIRECTORY}/Testing/*/*)
+  # message(STATUS "submit files : ${SUBMIT_FILES}")
+  # message(STATUS "PATH : ${CTEST_BINARY_DIRECTORY}")
+  
+  ctest_submit(
+    # PARTS 
+    # FILES ${SUBMIT_FILES}
+    # SUBMIT_URL "http://my.cdash.org/submit.php?project=sandbox"
+    # Implemented in cmake 3.15
+    # BUILD_ID buildid # Implemented in cmake 3.15
+    RETURN_VALUE RETURN_STATUS
+    CAPTURE_CMAKE_ERROR SUBMISSION_STATUS
+    )
 else()
   message("- Results won't be submitted to a cdash server.\n")
-endif()
-
-ctest_configure(
-  RETURN_VALUE CONFIGURE_RESULT
-  CAPTURE_CMAKE_ERROR CONFIGURE_STATUS
-  #QUIET
-  )
-
-message("=============== End of ctest_configure =============== ")
-message("------> Configure status/result : ${CONFIGURE_STATUS}/${CONFIGURE_RESULT}")
-if(NOT CONFIGURE_STATUS EQUAL 0 OR NOT CONFIGURE_RESULT EQUAL 0)
-  if(CDASH_SUBMIT)
-    ctest_submit(PARTS Configure)
-  endif()
-  message(FATAL_ERROR "\n\n *** Configure (cmake) process failed *** \n\n")
-endif()
-
-# --- Build ---
-
-if(NOT CTEST_BUILD_CONFIGURATION)
-  set(CTEST_BUILD_CONFIGURATION "Release")
-endif()
-
-message("\n\n=============== Start ctest_build =============== ")
-
-ctest_build(
-  PROJECT_NAME ${current_project}
-  CAPTURE_CMAKE_ERROR BUILD_STATUS
-  RETURN_VALUE BUILD_RESULT
-  #QUIET if quiet, travis failed because of missing outputs during a long time ...
-    )
-message("=============== End of ctest_build =============== ")
-message("------> Build status/result : ${BUILD_STATUS}/${BUILD_RESULT}")
-if(NOT BUILD_STATUS EQUAL 0 OR NOT BUILD_RESULT EQUAL 0)
-  if(CDASH_SUBMIT)
-    ctest_submit(PARTS Configure Build)
-  endif()
-  message(FATAL_ERROR " *** Build (make) process failed *** ")
-endif()
-
-
-# -- Tests --
-message("\n\n=============== Start ctest_test (nbprocs = ${NP}) =============== ")
-ctest_test(
-  #PARALLEL_LEVEL NP
-  CAPTURE_CMAKE_ERROR TEST_STATUS
-  #SCHEDULE_RANDOM ON
-  RETURN_VALUE TEST_RESULT
-#  QUIET
-)
-message("=============== End of ctest_test =============== ")
-message("------> Test status/result : ${TEST_STATUS}/${TEST_RESULT}")
-
-if(WITH_MEMCHECK AND CTEST_COVERAGE_COMMAND)
-  find_program(CTEST_COVERAGE_COMMAND NAMES gcov)
-# set(CTEST_COVERAGE_COMMAND gcov)
-
-  ctest_coverage(
-    CAPTURE_CMAKE_ERROR COVERAGE_STATUS
-    RETURN_VALUE COVERAGE_RESULT  
-  )
-  endif()
-
-#if(WITH_MEMCHECK AND CTEST_MEMORYCHECK_COMMAND)
-#  ctest_memcheck()
-#endif()
-
-# error status check later, we try to submit even if tests failed.
-
-# -- memory check -- Skip this to 'enlight' submit process, since cdash inria is overbooked ...
-if(CTEST_BUILD_CONFIGURATION MATCHES "Profiling")
-  find_program(CTEST_MEMORYCHECK_COMMAND NAMES valgrind)
-  set(CTEST_MEMORYCHECK_COMMAND_OPTIONS "--quiet --leak-check=full --show-leak-kinds=definite,possible --track-origins=yes --error-limit=no   --gen-suppressions=all") 
-  set(CTEST_MEMORYCHECK_COMMAND_OPTIONS "--quiet --leak-check=full --show-reachable=yes --error-limit=no --gen-suppressions=all") 
-  ctest_memcheck(PARALLEL_LEVEL NP QUIET)
-endif()
-if(NOT CDASH_SUBMIT)
   return()
 endif()
 
-# -- Submission to cdash --
-message("\n\n=============== Start ctest_submit =============== ")
-# file(GLOB SUBMIT_FILES ${CMAKE_BINARY_DIR}/Testing/*/*)
-# message(STATUS "submit files : ${SUBMIT_FILES}")
-ctest_submit(
-#  FILES ${SUBMIT_FILES}
-   PARTS Configure Build Test
-#   CAPTURE_CMAKE_ERROR  SUBMISSION_STATUS)
-# ctest_submit(
-#   PARTS Build
-#   CAPTURE_CMAKE_ERROR  SUBMISSION_STATUS)
-# ctest_submit(
-#   PARTS Test
-  CAPTURE_CMAKE_ERROR  SUBMISSION_STATUS
-  #RETRY_COUNT 4 # Retry 4 times, if submission failed ...)
-  #  RETRY_DELAY 1 # seconds
-  )
-message("=============== End of ctest_test =============== ")
 
 # ============= Summary =============
 message(STATUS "\n============================================ Summary ============================================")
 message(STATUS "CTest process for ${current_project} has ended.")
 message(STATUS "Ctest model is: ${model}")
 message(STATUS "Ctest executed on sources directory : ${CTEST_SOURCE_DIRECTORY}")
-message(STATUS "Build name (cdash) : ${CTEST_BUILD_NAME}")
-message(STATUS "Site (cdash) : ${CTEST_SITE}")
+if(CDASH_SUBMIT)
+  message(STATUS "Build name (cdash) : ${CTEST_BUILD_NAME}")
+  message(STATUS "Site (cdash) : ${CTEST_SITE}")
+endif()
 message(STATUS "=================================================================================================\n")
 
-# tests failed?
-if(NOT TEST_STATUS EQUAL 0 OR NOT TEST_RESULT EQUAL 0)
-  message(FATAL_ERROR " *** test failure *** ")
+if(CTEST_MODE STREQUAL "tests")
+  # tests failed?
+  if(NOT TEST_STATUS EQUAL 0 OR NOT TEST_RESULT EQUAL 0)
+    message(FATAL_ERROR " *** test failure *** ")
+  endif()
 endif()
-
 # -- Submission failed? --
 if(NOT SUBMISSION_STATUS EQUAL 0)
   message(WARNING " *** submission failure *** ")
