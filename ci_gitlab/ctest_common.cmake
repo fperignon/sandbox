@@ -141,9 +141,12 @@ ctest_test(
 message("=============== End of ctest_test =============== ")
 message("------> Test status/result : ${TEST_STATUS}/${TEST_RESULT}")
 
-if(WITH_MEMCHECK AND CTEST_COVERAGE_COMMAND)
-  ctest_coverage()
-endif()
+#if(WITH_MEMCHECK AND CTEST_COVERAGE_COMMAND)
+  ctest_coverage(
+    CAPTURE_CMAKE_ERROR COVERAGE_STATUS
+    RETURN_VALUE COVERAGE_RESULT  
+  )
+#endif()
 if(WITH_MEMCHECK AND CTEST_MEMORYCHECK_COMMAND)
   ctest_memcheck()
 endif()
@@ -167,7 +170,7 @@ message("\n\n=============== Start ctest_submit =============== ")
 # message(STATUS "submit files : ${SUBMIT_FILES}")
 ctest_submit(
 #  FILES ${SUBMIT_FILES}
-   PARTS Configure Build Test
+   PARTS Configure Build Test Coverage
 #   CAPTURE_CMAKE_ERROR  SUBMISSION_STATUS)
 # ctest_submit(
 #   PARTS Build
