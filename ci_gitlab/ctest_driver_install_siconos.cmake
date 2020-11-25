@@ -24,7 +24,7 @@ message("current env is ${currentenv}")
 execute_process(COMMAND pwd
       OUTPUT_VARIABLE currentpwd)
 message("current env is ${currentpwd}")
-execute_process(COMMAND ls
+execute_process(COMMAND "ls $HOME"
       OUTPUT_VARIABLE currentls)
 message("current env is ${currentls}")
 if(DEFINED DOCKER_PROJECT_SOURCE_DIR) # $ENV{TRAVIS} STREQUAL true)
