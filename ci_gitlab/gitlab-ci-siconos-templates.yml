@@ -133,7 +133,7 @@ stages:
   extends: .siconos-ctest
   variables:
     ctest_mode: Build
-    GIT_STRATEGY: none
+    GIT_STRATEGY: fetch
   stage: build
   artifacts:
     paths:
@@ -149,6 +149,6 @@ stages:
   extends: .siconos-ctest
   variables:
     ctest_mode: Test
-    GIT_STRATEGY: none
+    GIT_STRATEGY: fetch
   stage: test
 
