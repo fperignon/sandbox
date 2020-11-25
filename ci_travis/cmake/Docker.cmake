@@ -248,6 +248,7 @@ macro(add_docker_targets)
     -DCTEST_BINARY_DIRECTORY=${DOCKER_WORKDIR}            # default = .
     -DCTEST_BUILD_CONFIGURATION=${BUILD_CONFIGURATION}    # default = release
     -S ${DOCKER_CTEST_DRIVER}                             # ctest driver file
+    -DCTEST_MODE=all
     -DCTEST_SITE=${DOCKER_HOSTNAME}                       # site name for cdash
     -Dmodel=${DOCKER_CTEST_MODE}                          # ctest model (Exp, Continuous ...)
     -DCTEST_BUILD_NAME="${CTEST_BUILD_NAME}"
