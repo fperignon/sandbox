@@ -66,12 +66,10 @@ before_script:
   - cd build
 
 script:
+  - ln -s ../ci_gitlab/ctest_driver_install_siconos.cmake ../ci_travis/
   - if test "$TRAVIS" = true; then
-      - pwd
-      - ln -s ../ci_gitlab/ctest_driver_install_siconos.cmake ../ci_travis/
-      - ../ci_travis/driver.py --run --root-dir=.. --task="$TASK";
+       ../ci_travis/driver.py --run --root-dir=.. --task="$TASK";
     else
-      - ln -s ../ci_gitlab/ctest_driver_install_siconos.cmake ../ci_travis/
-      - ../ci_travis/driver.py --run --root-dir=..;
+       ../ci_travis/driver.py --run --root-dir=..;
     fi
 
