@@ -21,6 +21,12 @@ message("--- Start conf for siconos ctest pipeline.")
 execute_process(COMMAND env
       OUTPUT_VARIABLE currentenv)
 message("current env is ${currentenv}")
+execute_process(COMMAND pwd
+      OUTPUT_VARIABLE currentpwd)
+message("current env is ${currentpwd}")
+execute_process(COMMAND ls
+      OUTPUT_VARIABLE currentls)
+message("current env is ${currentls}")
 if(DEFINED DOCKER_PROJECT_SOURCE_DIR) # $ENV{TRAVIS} STREQUAL true)
   message("yes we are $ENV{TRAVIS_BUILD_DIR} ")
   set(ENV{CI_PROJECT_DIR} ${DOCKER_PROJECT_SOURCE_DIR})#TRAVIS_BUILD_DIR})
