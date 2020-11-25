@@ -252,6 +252,7 @@ macro(add_docker_targets)
     -DCTEST_SITE=${DOCKER_HOSTNAME}                       # site name for cdash
     -Dmodel=${DOCKER_CTEST_MODE}                          # ctest model (Exp, Continuous ...)
     -DCTEST_BUILD_NAME="${CTEST_BUILD_NAME}"
+    -VV
     )
 
   # Run ctest, no submission
