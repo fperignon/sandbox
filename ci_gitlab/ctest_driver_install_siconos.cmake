@@ -17,8 +17,10 @@ message("--- Start conf for siconos ctest pipeline.")
 # ============= setup  ================
 
 # -- CI_PROJECT_DIR is a required environment variable --
+ message("are we travis ? $ENV{TRAVIS} and $ENV{TRAVIS_BUILD_DIR} ")
 
 if($ENV{TRAVIS})
+  message("yes we are $ENV{TRAVIS_BUILD_DIR} ")
   set(ENV{CI_PROJECT_DIR} $ENV{TRAVIS_BUILD_DIR})
 endif()
 message(" TEST TRAVIS $ENV{TRAVIS_BUILD_DIR} and $ENV{CI_PROJECT_DIR}")
