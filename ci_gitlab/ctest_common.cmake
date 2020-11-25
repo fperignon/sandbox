@@ -96,9 +96,9 @@ function(set_cdash_build_name)
   # Get hash for commit of current version of Siconos
   # Saved by CI in CI_COMMIT_SHORT_SHA.
   if($ENV{GITLAB_CI} STREQUAL true)
-    message("THIS IS A TEST ${branch_commit})
+  
     set(branch_commit "$ENV{CI_COMMIT_REF_NAME}/$ENV{CI_COMMIT_SHORT_SHA}")
-     message("THIS IS A TEST ${branch_commit})
+    message("THIS IS A TEST ${branch_commit}")
   elseif($ENV{TRAVIS})
     set(branch_commit "$ENV{TRAVIS_BRANCH}/$ENV{TRAVIS_COMMIT}")
   else()
