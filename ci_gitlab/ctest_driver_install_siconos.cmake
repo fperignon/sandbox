@@ -21,8 +21,8 @@ message("--- Start conf for siconos ctest pipeline.")
 if($ENV{TRAVIS})
   set(ENV{CI_PROJECT_DIR} $ENV{TRAVIS_BUILD_DIR})
 endif()
-
-if(NOT DEFINED ENV{CI_PROJECT_DIR})
+message(" TEST TRAVIS $ENV{TRAVIS_BUILD_DIR} and $ENV{CI_PROJECT_DIR})
+if(NOT DEFINED ENV{CI_PROJECT_DIR} )
   message(FATAL_ERROR "Please set env variable CI_PROJECT_DIR to siconos sources directory (git repo).")
 endif()
 
