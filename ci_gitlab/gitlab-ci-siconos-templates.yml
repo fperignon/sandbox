@@ -118,6 +118,7 @@ stages:
 .siconos-configure:
   extends: .siconos-ctest
   variables:
+    GIT_STRATEGY: clone
     ctest_mode: Configure
   stage: configure
 
