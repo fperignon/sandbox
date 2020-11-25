@@ -115,7 +115,7 @@ stages:
   extends: .siconos-ctest
   variables:
     GIT_STRATEGY: clone
-    ctest_mode: all
+    ctest_mode: Configure
   stage: configure
   artifacts:
     paths:

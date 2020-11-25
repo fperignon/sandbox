@@ -51,30 +51,30 @@ include:
 # Siconos build and install, default config
 # (based on cmake/default_siconos.cmake)
 # on ubuntu 18.04.
-# configure:ubuntu18.04:
-#    variables:
-#      IMAGE_NAME: $CI_REGISTRY_IMAGE/ubuntu18.04
-#      cdash_submit: 1
-#      user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
-#    extends: .siconos-configure
+configure:ubuntu18.04:
+    variables:
+      IMAGE_NAME: $CI_REGISTRY_IMAGE/ubuntu18.04
+      cdash_submit: 1
+      user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
+    extends: .siconos-configure
 
-# build:ubuntu18.04:
-#    variables:
-#      IMAGE_NAME: $CI_REGISTRY_IMAGE/ubuntu18.04
-#      cdash_submit: 1
-#      user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
-#    extends: .siconos-build
-#    dependencies:
-#      - configure:ubuntu18.04
+build:ubuntu18.04:
+    variables:
+      IMAGE_NAME: $CI_REGISTRY_IMAGE/ubuntu18.04
+      cdash_submit: 1
+      user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
+    extends: .siconos-build
+    dependencies:
+      - configure:ubuntu18.04
 
-# test:ubuntu18.04:
-#    variables:
-#      IMAGE_NAME: $CI_REGISTRY_IMAGE/ubuntu18.04
-#      cdash_submit: 1
-#      user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
-#    dependencies:
-#      - build:ubuntu18.04
-#    extends: .siconos-test
+test:ubuntu18.04:
+    variables:
+      IMAGE_NAME: $CI_REGISTRY_IMAGE/ubuntu18.04
+      cdash_submit: 1
+      user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
+    dependencies:
+      - build:ubuntu18.04
+    extends: .siconos-test
 
 configure:debian-buster:
    variables:
@@ -83,20 +83,20 @@ configure:debian-buster:
      user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
    extends: .siconos-configure
 
-# build:debian-buster:
-#    variables:
-#      IMAGE_NAME: $CI_REGISTRY_IMAGE/debian-buster
-#      cdash_submit: 1
-#      user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
-#    extends: .siconos-build
-#    dependencies:
-#      - configure:debian-buster
+build:debian-buster:
+    variables:
+      IMAGE_NAME: $CI_REGISTRY_IMAGE/debian-buster
+      cdash_submit: 1
+      user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
+    extends: .siconos-build
+    dependencies:
+      - configure:debian-buster
 
-# test:debian-buster:
-#    variables:
-#      IMAGE_NAME: $CI_REGISTRY_IMAGE/debian-buster
-#      cdash_submit: 1
-#      user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
-#    dependencies:
-#      - build:debian-buster
-#    extends: .siconos-test
+test:debian-buster:
+    variables:
+      IMAGE_NAME: $CI_REGISTRY_IMAGE/debian-buster
+      cdash_submit: 1
+      user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
+    dependencies:
+      - build:debian-buster
+    extends: .siconos-test
