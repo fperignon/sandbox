@@ -119,7 +119,7 @@ stages:
   stage: configure
   artifacts:
     paths:
-      - build
+      - $CI_PROJECT_DIR
     expire_in: 2 days  
 
 
@@ -133,11 +133,11 @@ stages:
   extends: .siconos-ctest
   variables:
     ctest_mode: Build
-    GIT_STRATEGY: fetch
+    GIT_STRATEGY: none
   stage: build
   artifacts:
     paths:
-      - build
+      - $CI_PROJECT_DIR
     expire_in: 2 days  
 
 
@@ -149,6 +149,6 @@ stages:
   extends: .siconos-ctest
   variables:
     ctest_mode: Test
-    GIT_STRATEGY: fetch
+    GIT_STRATEGY: none
   stage: test
 
