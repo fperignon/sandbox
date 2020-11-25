@@ -1,6 +1,6 @@
 # -*- org -*-
 
-* Travis Continuous Integration
+* Continuous Integration
 
 under siconos source
 mkdir build
