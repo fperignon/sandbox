@@ -104,9 +104,6 @@ stages:
     - date
     - env
     - "sh ci_gitlab/ctest_siconos.sh $ctest_mode $user_file" 
-  artifacts:
-    paths:
-      - $CI_PROJECT_DIR
     #exclude:
     #  - $CI_PROJECT_DIR/.*git
     expire_in: 2 days  
@@ -121,6 +118,10 @@ stages:
     GIT_STRATEGY: clone
     ctest_mode: Configure
   stage: configure
+  artifacts:
+    paths:
+      - build
+
 
 
 # -- Template for siconos build-test-install jobs --
@@ -133,6 +134,10 @@ stages:
     ctest_mode: Build
     GIT_STRATEGY: none
   stage: build
+  artifacts:
+     paths:
+      - build
+
 
 # -- Template for siconos build-test-install jobs --
 # - Pull an image (possibly from siconos registry)
