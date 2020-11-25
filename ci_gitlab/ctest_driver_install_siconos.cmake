@@ -33,9 +33,15 @@ message(" TEST TRAVIS $ENV{CI_PROJECT_DIR}")
 # -- Definition of all variables required for ctest --
 include($ENV{CI_PROJECT_DIR}/ci_gitlab/ctest_common.cmake)
 
+if(USER_FILE)
+  # Push user file as notes to cdash.
+  set(CTEST_NOTES_FILES ${USER_FILE})
+endif()
+
 # =============  Run ctest steps ================
 # Either one by one (to split ci jobs) if CTEST_MODE=Configure, Build, Test or
 # all in a row if CTEST_MODE=all.
+# Submit : only after test phase except if conf or build failed.
 
 # - Configure -- 
 if(${CTEST_MODE} STREQUAL "Configure" OR ${CTEST_MODE} STREQUAL "all")
@@ -60,10 +66,6 @@ if(${CTEST_MODE} STREQUAL "Configure" OR ${CTEST_MODE} STREQUAL "all")
   message("\n\n=============== Start ctest_configure =============== ")
   message("- Configure command line :\n ${CTEST_CONFIGURE_COMMAND}\n")
 
-  if(USER_FILE)
-    # Push user file as notes to cdash.
-    set(CTEST_NOTES_FILES ${USER_FILE})
-  endif()
   ctest_configure(
     RETURN_VALUE _RESULT
     CAPTURE_CMAKE_ERROR _STATUS
@@ -121,6 +123,16 @@ if(${CTEST_MODE} STREQUAL "Test" OR ${CTEST_MODE} STREQUAL "all")
     ctest_memcheck()
   endif()
 
+  if(CDASH_SUBMIT)
+    ctest_submit(
+      RETURN_VALUE RETURN_STATUS
+      CAPTURE_CMAKE_ERROR SUBMISSION_STATUS
+      )
+    if(NOT SUBMISSION_STATUS EQUAL 0)
+      message(WARNING " *** submission failure *** ")
+    endif()
+  endif()
+
   # error status check later, we try to submit even if tests failed.
 
   # -- memory check -- Skip this to 'enlight' submit process, since cdash inria is overbooked ...
@@ -132,6 +144,7 @@ if(${CTEST_MODE} STREQUAL "Test" OR ${CTEST_MODE} STREQUAL "all")
   # endif()
 
 endif()
+
 
 # ============= Summary =============
 message(STATUS "\n============================================ Summary ============================================")

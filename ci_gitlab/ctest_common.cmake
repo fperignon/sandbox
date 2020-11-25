@@ -23,32 +23,24 @@ function(post_ctest)
   cmake_parse_arguments(run "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN} )
 
   message("------> status/result : ${_STATUS}/${_RESULT}")
-  if(${run_PHASE} STREQUAL Configure)
-    set(parts ${run_PHASE} Notes)
-  else()
-    set(parts ${run_PHASE})
-
-  endif()
-  if(CDASH_SUBMIT)
-    ctest_submit(
-      PARTS ${parts}
-      RETURN_VALUE RETURN_STATUS
-      CAPTURE_CMAKE_ERROR SUBMISSION_STATUS
-      )
-  else()
-    message("- Results won't be submitted to a cdash server.\n")
-    return()
-  endif()
-
   if(NOT _STATUS EQUAL 0 OR NOT _RESULT EQUAL 0)
+    if(CDASH_SUBMIT)
+      ctest_submit(
+        RETURN_VALUE RETURN_STATUS
+        CAPTURE_CMAKE_ERROR SUBMISSION_STATUS
+        )
+      if(NOT SUBMISSION_STATUS EQUAL 0)
+        message(WARNING " *** submission failure *** ")
+      endif()
+    else()
+      message("- Results won't be submitted to a cdash server.\n")
+      return()
+    endif()
     message(FATAL_ERROR "\n\n *** ${run_PHASE} process failed *** \n\n")
   endif()
   unset(_RESULT PARENT_SCOPE)
   unset(_STATUS PARENT_SCOPE)
   message("=============== End of ctest ${run_PHASE} =============== ")
-  if(NOT SUBMISSION_STATUS EQUAL 0)
-    message(WARNING " *** submission failure *** ")
-  endif()
 
 endfunction()
 
@@ -117,14 +109,16 @@ function(set_cdash_build_name)
   endif()
   message("THIS IS A TEST ${branch_commit}")
   include(${CTEST_SOURCE_DIRECTORY}/cmake/SiconosVersion.cmake)  
-  set(CTEST_BUILD_NAME "Siconos (${SICONOS_VERSION}-devel, branch/commit=${branch_commit}")
+  set(_name "Siconos (${SICONOS_VERSION}-devel,${branch_commit})")
   if(USER_FILE)
-    get_filename_component(_name ${USER_FILE} NAME)
-    set(CTEST_BUILD_NAME "${CTEST_BUILD_NAME} - Option file: ${_name}")
+    get_filename_component(_fname ${USER_FILE} NAME)
+    string(STRIP ${_fname} _fname)
+    set(_name "${_name}, ${_fname}")
+    string(STRIP ${_name} _name)
   endif()
 
-  set(CTEST_BUILD_NAME ${CTEST_BUILD_NAME} PARENT_SCOPE)
-  
+  set(CTEST_BUILD_NAME ${_name} PARENT_SCOPE)
+
 endfunction()
 
 # ------------------
@@ -174,7 +168,6 @@ endif()
 if(NOT SICONOS_INSTALL_DIR)
   set(SICONOS_INSTALL_DIR $ENV{CI_PROJECT_DIR}/install-siconos/)
 endif()
-
 # Build name (for cdash)
 if(NOT CTEST_BUILD_NAME)
   set_cdash_build_name()
@@ -197,16 +190,6 @@ endif()
 if(NOT CTEST_CMAKE_GENERATOR)
   set(CTEST_CMAKE_GENERATOR "Unix Makefiles")
 endif()
-
-# if(NOT DEFINED ALLOW_PARALLEL_BUILD)
-#   set(ALLOW_PARALLEL_BUILD ON)
-# endif()
-# option(ALLOW_PARALLEL_BUILD "Allow parallel build" ${ALLOW_PARALLEL_BUILD})
-cmake_host_system_information(RESULT NP QUERY NUMBER_OF_LOGICAL_CORES)
-if(NOT ALLOW_PARALLEL_BUILD)
-  set(NP 1)
-endif()
-set(CTEST_BUILD_FLAGS -j${NP})
 
 if(NOT CTEST_SITE)
   set_site_name()
