@@ -106,8 +106,7 @@ stages:
     - "sh ci_gitlab/ctest_siconos.sh $ctest_mode $user_file" 
     #exclude:
     #  - $CI_PROJECT_DIR/.*git
-    expire_in: 2 days  
-
+  
 # -- Template for siconos build-test-install jobs --
 # - Pull an image (possibly from siconos registry)
 #   named  IMAGE_NAME
@@ -121,6 +120,8 @@ stages:
   artifacts:
     paths:
       - build
+    expire_in: 2 days  
+
 
 
 
@@ -135,8 +136,9 @@ stages:
     GIT_STRATEGY: none
   stage: build
   artifacts:
-     paths:
+    paths:
       - build
+    expire_in: 2 days  
 
 
 # -- Template for siconos build-test-install jobs --
