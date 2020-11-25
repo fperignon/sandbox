@@ -67,6 +67,7 @@ before_script:
 
 script:
   - ln -s ../ci_gitlab/ctest_driver_install_siconos.cmake ../ci_travis/
+  - env
   - if test "$TRAVIS" = true; then
        ../ci_travis/driver.py --run --root-dir=.. --task="$TASK";
     else
