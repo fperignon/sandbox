@@ -54,18 +54,32 @@ function(set_site_name)
   cmake_host_system_information(RESULT fqdn QUERY FQDN)
 
   if(${CMAKE_VERSION} VERSION_GREATER "3.10.3") 
+    # https://cmake.org/cmake/help/latest/command/cmake_host_system_information.html
     cmake_host_system_information(RESULT osname QUERY OS_NAME)
     cmake_host_system_information(RESULT osrelease QUERY OS_RELEASE)
-    cmake_host_system_information(RESULT osversion QUERY OS_VERSION)
+    # cmake_host_system_information(RESULT osversion QUERY OS_VERSION)
     cmake_host_system_information(RESULT osplatform QUERY OS_PLATFORM)
+    cmake_host_system_information(RESULT fqnd QUERY FQDN)
+    cmake_host_system_information(RESULT procname QUERY PROCESSOR_NAME)
+    cmake_host_system_information(RESULT hostname QUERY HOSTNAME)
+
+    message(STATUS "ok ${osname})
+     message(STATUS "ok ${osrelease})
+    message(STATUS "ok ${hostname})
+    message(STATUS "ok ${osplatform})
+    message(STATUS "ok ${osname})
+    message(STATUS "ok ${fqdn})
+     message(STATUS "ok ${procname})
+   
+   
   else()
     set(osname ${CMAKE_SYSTEM_NAME})
-    set(osversion ${CMAKE_SYSTEM_VERSION})
+    # set(osversion ${CMAKE_SYSTEM_VERSION})
     set(osplatform ${CMAKE_SYSTEM_PROCESSOR})
   endif()
 
   string(STRIP ${osname} osname)
-  string(STRIP ${osversion} osversion)
+  # string(STRIP ${osversion} osversion)
   string(STRIP ${osplatform} osplatform)
 
   # Host description
@@ -97,8 +111,10 @@ function(set_cdash_build_name)
   # Saved by CI in CI_COMMIT_SHORT_SHA.
   if(CI_GITLAB)
     set(branch_commit "$ENV{CI_COMMIT_REF_NAME}-$ENV{CI_COMMIT_SHORT_SHA}")
-  elseif(CI_TRAVIS) # not defined inside docker container run from travis ... ?
-    set(branch_commit "$ENV{TRAVIS_BRANCH}-$ENV{TRAVIS_COMMIT}")
+  elseif(CI_TRAVIS) 
+    string(SUBSTRING $ENV{TRAVIS_COMMIT} 0 7 TRAVIS_SHORT_COMMIT})
+    string(STRIP ${TRAVIS_SHORT_COMMIT} TRAVIS_SHORT_COMMIT)
+    set(branch_commit "$ENV{TRAVIS_BRANCH}-${TRAVIS_SHORT_COMMIT}")
   else()
     find_package(Git)
     execute_process(COMMAND
