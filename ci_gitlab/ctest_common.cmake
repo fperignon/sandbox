@@ -58,16 +58,12 @@ function(set_site_name)
     cmake_host_system_information(RESULT osname QUERY OS_NAME)
     cmake_host_system_information(RESULT osrelease QUERY OS_RELEASE)
     cmake_host_system_information(RESULT osplatform QUERY OS_PLATFORM)
-    cmake_host_system_information(RESULT fqnd QUERY FQDN)
-    cmake_host_system_information(RESULT procname QUERY PROCESSOR_NAME)
     cmake_host_system_information(RESULT hostname QUERY HOSTNAME)
 
     message(STATUS "ok ${osname}")
     message(STATUS "ok ${osrelease}")
     message(STATUS "ok ${hostname}")
     message(STATUS "ok ${osplatform}")
-    message(STATUS "ok ${fqdn}")
-    message(STATUS "ok ${procname}")
    
    
   else()
@@ -79,15 +75,20 @@ function(set_site_name)
   string(STRIP ${osplatform} osplatform)
 
   if(CI_GITLAB)
+  message(" oosoqsoo o oo o  $ENV{CI_REGISTRY_IMAGE} and $ENV{CI_JOB_IMAGE}")
     string(REPLACE "$ENV{CI_REGISTRY_IMAGE}/" $ENV{CI_JOB_IMAGE} dockerimagename)
+   message(" oosoqsoo o oo o  ${dockerimagename}")
     string(STRIP ${dockerimagename} dockerimagename)
     set(osname "${osname}-${dockerimagename}")
+     message(" oosoqsoo o oo o  ${osname}")
+  
     string(STRIP ${osname} osname)
     set(hostname "registry-on-gitlab-runner-$ENV{CI_RUNNER_DESCRIPTION}")
   elseif(CI_TRAVIS)
     set(hostname "${hostname}-travis") 
   endif()
-
+ message(" RAAAAAA   ${hostname}")
+  
   set(_SITE "${osname}-${osrelease}-${osplatform}-${hostname}")
   string(STRIP _SITE ${_SITE})
     
