@@ -71,8 +71,9 @@ function(set_site_name)
   # With gitlab-ci, runner name is too long and useless ...
   string(FIND ${hostname} "runner-" on_ci) 
   if(on_ci GREATER -1)
-    set(hostname "runner: $ENV{CI_RUNNER_DESCRIPTION}")
-    string(STRIP ${hostname} hostname)
+    string(STRIP $ENV{CI_RUNNER_DESCRIPTION} hostname)
+    set(hostname "runner-${hostname}")
+    #string(STRIP ${hostname} hostname)
   endif()
 
   # Host description
