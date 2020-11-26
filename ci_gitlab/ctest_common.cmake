@@ -79,12 +79,15 @@ function(set_site_name)
     string(REPLACE
       "gricad-registry.univ-grenoble-alpes.fr/$ENV{CI_PROJECT_PATH}/" ""
       OSNAME ${OSNAME})
-    
-  endif()
+    endif()
   set(_SITE "${OSNAME} ${osrelease}, ${osplatform}, ${hostname}")
   string(STRIP _SITE ${_SITE})
-  #set(CTEST_SITE "${_SITE}" PARENT_SCOPE)
-  set(CTEST_SITE "${OSNAME}" PARENT_SCOPE) 
+  
+  if(CI_GITLAB)
+    set(_SITE "${_SITE} (gitlab reg.)")
+  endif()
+  #set(CTEST_SITE "${OSNAME}" PARENT_SCOPE) 
+  set(CTEST_SITE "${_SITE}" PARENT_SCOPE)
 endfunction()
 
 # set build name, according to host, ci, git status ...
