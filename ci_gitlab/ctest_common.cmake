@@ -77,14 +77,16 @@ function(set_site_name)
   
   if(CI_GITLAB)
     string(REPLACE
-      "gricad-registry.univ-grenoble-alpes.fr/$ENV{CI_PROJECT_PATH}" ""
+      "gricad-registry.univ-grenoble-alpes.fr/$ENV{CI_PROJECT_PATH}/" ""
       OSNAME ${OSNAME})
-    set(_SITE "${OSNAME} ${osrelease}, ${osplatform}, ${hostname}")
-    string(STRIP _SITE ${_SITE})
-    set(CTEST_SITE "${_SITE}" PARENT_SCOPE)
+    
   endif()
-  
+  set(_SITE "${OSNAME} ${osrelease}, ${osplatform}, ${hostname}")
+  string(STRIP _SITE ${_SITE})
+  #set(CTEST_SITE "${_SITE}" PARENT_SCOPE)
+  set(CTEST_SITE "${OSNAME}" PARENT_SCOPE) 
 endfunction()
+
 # set build name, according to host, ci, git status ...
 function(set_cdash_build_name)
   # Get hash for commit of current version of Siconos
@@ -117,7 +119,8 @@ function(set_cdash_build_name)
   #   string(STRIP ${_name} _name)
   # endif()
 
-  set(CTEST_BUILD_NAME ${_name} PARENT_SCOPE)
+  #set(CTEST_BUILD_NAME "${_name}" PARENT_SCOPE)
+  set(CTEST_BUILD_NAME "toto" PARENT_SCOPE)
 
 endfunction()
 
