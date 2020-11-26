@@ -88,9 +88,9 @@ function(set_cdash_build_name)
   # Get hash for commit of current version of Siconos
   # Saved by CI in CI_COMMIT_SHORT_SHA.
   if(CI_GITLAB)
-    set(branch_commit "$ENV{CI_COMMIT_REF_NAME}/$ENV{CI_COMMIT_SHORT_SHA}")
+    set(branch_commit "$ENV{CI_COMMIT_REF_NAME}-$ENV{CI_COMMIT_SHORT_SHA}")
   elseif(CI_TRAVIS) # not defined inside docker container run from travis ... ?
-    set(branch_commit "$ENV{TRAVIS_BRANCH}/$ENV{TRAVIS_COMMIT}")
+    set(branch_commit "$ENV{TRAVIS_BRANCH}-$ENV{TRAVIS_COMMIT}")
   else()
     find_package(Git)
     execute_process(COMMAND
@@ -103,7 +103,7 @@ function(set_cdash_build_name)
       OUTPUT_VARIABLE COMMIT_REF_NAME
       OUTPUT_STRIP_TRAILING_WHITESPACE
       WORKING_DIRECTORY $ENV{CI_PROJECT_DIR})
-    set(branch_commit "${COMMIT_REF_NAME}/${COMMIT_SHORT_SHA}")
+    set(branch_commit "${COMMIT_REF_NAME}-${COMMIT_SHORT_SHA}")
   endif()
   message("THIS IS A TEST ${branch_commit}")
   include(${CTEST_SOURCE_DIRECTORY}/cmake/SiconosVersion.cmake)  

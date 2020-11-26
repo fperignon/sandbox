@@ -20,12 +20,12 @@ message("--- Start conf for siconos ctest pipeline.")
 # --> set by default for gitlab-ci, even inside the docker container
 # --> unknown in docker container run with travis/siconos pipeline.
 
-if(defined $ENV{TRAVIS})
+if(DEFINED ENV{TRAVIS})
   if($ENV{TRAVIS} STREQUAL true)
     set(CI_TRAVIS ON)
     set(ENV{CI_PROJECT_DIR} ${CTEST_SOURCE_DIRECTORY})
   endif()
-elseif(defined $ENV{GITLAB_CI})
+elseif(DEFINED ENV{GITLAB_CI})
   if($ENV{GITLAB_CI} STREQUAL true)
     set(CI_GITLAB ON)
   endif()
