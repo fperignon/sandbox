@@ -165,8 +165,8 @@ macro(add_docker_targets)
   add_custom_target(
     ${DOCKER_IMAGE_AS_DIR}-build
     COMMENT "Docker Build : ${DOCKER_IMAGE}"
-    COMMAND cd Docker/Context/${DOCKER_REPOSITORY}/${DOCKER_IMAGE_AS_DIR} && docker build -t ${DOCKER_REPOSITORY}/${DOCKER_IMAGE}) . #> /dev/null
-    #)
+    COMMAND cd Docker/Context/${DOCKER_REPOSITORY}/${DOCKER_IMAGE_AS_DIR} && docker build -t ${DOCKER_REPOSITORY}/${DOCKER_IMAGE} . > /dev/null
+    )
 
   # bind DOCKER_WORKDIR inside container
   add_custom_command(
