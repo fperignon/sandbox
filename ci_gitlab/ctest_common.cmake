@@ -68,32 +68,24 @@ function(set_site_name)
   string(STRIP ${osversion} osversion)
   string(STRIP ${osplatform} osplatform)
 
-  # With gitlab-ci, runner name is too long and useless ...
-  string(FIND ${hostname} "runner-" on_ci) 
-  if(on_ci GREATER -1)
-    string(STRIP $ENV{CI_RUNNER_DESCRIPTION} hostname)
-    set(hostname "runner-${hostname}")
-    #string(STRIP ${hostname} hostname)
-  endif()
-
   # Host description
   if(NOT OSNAME)
     set(OSNAME ${osname}) # Use -DOSNAME=docker_image name on CI
   endif()
   
+  
   if(CI_GITLAB)
+    string(STRIP $ENV{CI_RUNNER_DESCRIPTION} hostname)
+    set(hostname "registry-on-gitlab-runner-${hostname}")
+    # With gitlab-ci, runner name is too long and useless ...
     string(REPLACE
       "gricad-registry.univ-grenoble-alpes.fr/$ENV{CI_PROJECT_PATH}/" ""
       OSNAME ${OSNAME})
-    endif()
+  endif()
+
   set(_SITE "${OSNAME}-${osrelease}-${osplatform}-${hostname}")
   string(STRIP _SITE ${_SITE})
-  
-  #if(CI_GITLAB)
-  #  set(_SITE "${_SITE} (gitlab registry)")
-  #  string(STRIP _SITE ${_SITE})
-  endif()
-  #set(CTEST_SITE "${OSNAME}" PARENT_SCOPE) 
+    
   set(CTEST_SITE "${_SITE}" PARENT_SCOPE)
 endfunction()
 
