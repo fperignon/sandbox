@@ -75,10 +75,10 @@ function(set_site_name)
   string(STRIP ${osplatform} osplatform)
 
   if(CI_GITLAB)
-    string(SUBSTRING $ENV{CI_JOB_IMAGE} 20 -1 dockerimagename) 
+    string(SUBSTRING $ENV{CI_JOB_IMAGE} 19 -1 dockerimagename) 
    message(" oosoqsoo o oo o  ${dockerimagename}")
     string(STRIP ${dockerimagename} dockerimagename)
-    set(osname "${osname}-${dockerimagename}")
+    set(osname "${osname}-[${dockerimagename}]")
      message(" oosoqsoo o oo o  ${osname}")
   
     string(STRIP ${osname} osname)
@@ -88,9 +88,9 @@ function(set_site_name)
   endif()
  message(" RAAAAAA   ${hostname}")
   
-  set(_SITE "${osname}-${osrelease}-${osplatform}-${hostname}")
+  set(_SITE "${osname}-${hostname}-${osrelease}-${osplatform}")
   string(STRIP _SITE ${_SITE})
-    
+
   set(CTEST_SITE "${_SITE}" PARENT_SCOPE)
 endfunction()
 
