@@ -242,11 +242,6 @@ macro(add_docker_targets)
     COMMENT "Docker make clean : ${DOCKER_IMAGE}"
     COMMAND ${DOCKER_COMMAND_FULL} -t ${DOCKER_REPOSITORY}/${DOCKER_IMAGE} make ${DOCKER_MAKE_CLEAN_FLAGS} clean)
 
-  include(${DOCKER_PROJECT_SOURCE_DIR}/cmake/SiconosVersion.cmake)
-  set(commit_branch "$ENV{TRAVIS_BRANCH}/$ENV{TRAVIS_COMMIT}")
-  string(STRIP ${commit_branch} commit_branch)
-  set(_NAME "Siconos(${SICONOS_VERSION}-devel-${commit_branch})")
-  string(STRIP ${_NAME} CTEST_BUILD_NAME)
   # --- ctest targets ---
   set(CTEST_COMMAND ctest
     -DCTEST_SOURCE_DIRECTORY=${DOCKER_PROJECT_SOURCE_DIR} # default = env(CI_PROJECT_DIR)
@@ -254,9 +249,7 @@ macro(add_docker_targets)
     -DCTEST_BUILD_CONFIGURATION=${BUILD_CONFIGURATION}    # default = release
     -S ${DOCKER_CTEST_DRIVER}                             # ctest driver file
     -DCTEST_MODE=all
-    #-DCTEST_SITE=${DOCKER_HOSTNAME}                       # site name for cdash
     -Dmodel=${DOCKER_CTEST_MODE}                          # ctest model (Exp, Continuous ...)
-    #-DCTEST_BUILD_NAME="${CTEST_BUILD_NAME}"
     -V
     )
 

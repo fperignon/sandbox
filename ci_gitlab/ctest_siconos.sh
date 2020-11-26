@@ -18,7 +18,6 @@
 
 : ${CI_PROJECT_DIR:?"Please set environment variable CI_PROJECT_DIR with 'siconos' repository (absolute) path."}
 : ${ctest_build_model:?"Please set Dashboard client mode. Choose among Experimental, Continuous or Nightly."}
-: ${IMAGE_NAME:?"Please set environment variable IMAGE_NAME. It will be used to name cdash build site."}
 : ${cdash_submit:?"Please set environment variable cdash_submit to TRUE or FALSE. If true, ctests results will be submitted to cdash server."}
 : ${allow_parallel_build:?"Please set environment variable allow_parallel_build to TRUE or FALSE. If true, ctests will use paralle build option (-jN)".}
 
@@ -46,4 +45,4 @@ fi
 # - CTEST_MODE : choose which parts of ctest process must be run (configure, build, tests or all)
 cd $CI_PROJECT_DIR/build
 #git rev-parse HEAD
-ctest -S ${CI_PROJECT_DIR}/ci_gitlab/ctest_driver_install_siconos.cmake -Dmodel=$ctest_build_model -DSICONOS_INSTALL_DIR=${CI_PROJECT_DIR}/install-siconos -DUSER_FILE=$user_file -DOSNAME=$IMAGE_NAME -DALLOW_PARALLEL_BUILD=$allow_parallel_build -DCDASH_SUBMIT=$cdash_submit -V -DCTEST_MODE=${ctest_mode}
+ctest -S ${CI_PROJECT_DIR}/ci_gitlab/ctest_driver_install_siconos.cmake -Dmodel=$ctest_build_model -DSICONOS_INSTALL_DIR=${CI_PROJECT_DIR}/install-siconos -DUSER_FILE=$user_file -DALLOW_PARALLEL_BUILD=$allow_parallel_build -DCDASH_SUBMIT=$cdash_submit -V -DCTEST_MODE=${ctest_mode}

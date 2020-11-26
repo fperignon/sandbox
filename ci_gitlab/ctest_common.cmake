@@ -76,17 +76,11 @@ function(set_site_name)
 
   if(CI_GITLAB)
     string(SUBSTRING $ENV{CI_JOB_IMAGE} 19 -1 dockerimagename) 
-   message(" oosoqsoo o oo o  ${dockerimagename}")
     string(STRIP ${dockerimagename} dockerimagename)
-    set(osname "${osname}-[${dockerimagename}]")
-     message(" oosoqsoo o oo o  ${osname}")
-  
-    string(STRIP ${osname} osname)
-    set(hostname "registry-on-gitlab-runner-$ENV{CI_RUNNER_DESCRIPTION}")
+    set(hostname "[ ${dockerimagename} registry][gitlab-runner $ENV{CI_RUNNER_DESCRIPTION}]")
   elseif(CI_TRAVIS)
     set(hostname "${hostname}-travis") 
   endif()
- message(" RAAAAAA   ${hostname}")
   
   set(_SITE "${osname}-${osrelease}-${osplatform}-${hostname}")
   string(STRIP _SITE ${_SITE})
