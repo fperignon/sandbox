@@ -243,8 +243,8 @@ macro(add_docker_targets)
     COMMAND ${DOCKER_COMMAND_FULL} -t ${DOCKER_REPOSITORY}/${DOCKER_IMAGE} make ${DOCKER_MAKE_CLEAN_FLAGS} clean)
 
   include(${DOCKER_PROJECT_SOURCE_DIR}/cmake/SiconosVersion.cmake)
-  set(CTEST_BUILD_NAME "Siconos (${SICONOS_VERSION}-devel, branch/commit=$ENV{TRAVIS_BRANCH}/$ENV{TRAVIS_COMMIT})")
-
+  set(_NAME "Siconos(${SICONOS_VERSION}-devel-$ENV{TRAVIS_BRANCH}/$ENV{TRAVIS_COMMIT})")
+  string(STRIP ${_NAME} CTEST_BUILD_NAME)
   # --- ctest targets ---
   set(CTEST_COMMAND ctest
     -DCTEST_SOURCE_DIRECTORY=${DOCKER_PROJECT_SOURCE_DIR} # default = env(CI_PROJECT_DIR)
