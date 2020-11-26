@@ -43,7 +43,7 @@
 #include "FirstOrderNonLinearDS.hpp"
 
 #include "SimulationGraphs.hpp"
-
+#include <variant>
 using namespace std;
 using namespace RELATION;
 
