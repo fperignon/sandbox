@@ -57,7 +57,6 @@ function(set_site_name)
     # https://cmake.org/cmake/help/latest/command/cmake_host_system_information.html
     cmake_host_system_information(RESULT osname QUERY OS_NAME)
     cmake_host_system_information(RESULT osrelease QUERY OS_RELEASE)
-    # cmake_host_system_information(RESULT osversion QUERY OS_VERSION)
     cmake_host_system_information(RESULT osplatform QUERY OS_PLATFORM)
     cmake_host_system_information(RESULT fqnd QUERY FQDN)
     cmake_host_system_information(RESULT procname QUERY PROCESSOR_NAME)
@@ -67,19 +66,16 @@ function(set_site_name)
      message(STATUS "ok ${osrelease}")
     message(STATUS "ok ${hostname}")
     message(STATUS "ok ${osplatform}")
-    message(STATUS "ok ${osname}")
     message(STATUS "ok ${fqdn}")
      message(STATUS "ok ${procname}")
    
    
   else()
     set(osname ${CMAKE_SYSTEM_NAME})
-    # set(osversion ${CMAKE_SYSTEM_VERSION})
     set(osplatform ${CMAKE_SYSTEM_PROCESSOR})
   endif()
 
   string(STRIP ${osname} osname)
-  # string(STRIP ${osversion} osversion)
   string(STRIP ${osplatform} osplatform)
 
   # Host description
