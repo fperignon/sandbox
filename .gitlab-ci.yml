@@ -51,30 +51,12 @@ include:
 # Siconos build and install, default config
 # (based on cmake/default_siconos.cmake)
 # on ubuntu 18.04.
-configure:ubuntu18.04:
+full:ubuntu18.04:
     variables:
       IMAGE_NAME: $CI_REGISTRY_IMAGE/ubuntu18.04
       cdash_submit: 1
       user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
-    extends: .siconos-configure
-
-build:ubuntu18.04:
-    variables:
-      IMAGE_NAME: $CI_REGISTRY_IMAGE/ubuntu18.04
-      cdash_submit: 1
-      user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
-    extends: .siconos-build
-    dependencies:
-      - configure:ubuntu18.04
-
-test:ubuntu18.04:
-    variables:
-      IMAGE_NAME: $CI_REGISTRY_IMAGE/ubuntu18.04
-      cdash_submit: 1
-      user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
-    dependencies:
-      - build:ubuntu18.04
-    extends: .siconos-test
+    extends: .siconos-full
 
 configure:debian-buster:
    variables:

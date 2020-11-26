@@ -122,9 +122,6 @@ stages:
       - $CI_PROJECT_DIR
     expire_in: 2 days  
 
-
-
-
 # -- Template for siconos build-test-install jobs --
 # - Pull an image (possibly from siconos registry)
 #   named  IMAGE_NAME
@@ -140,7 +137,6 @@ stages:
       - $CI_PROJECT_DIR
     expire_in: 2 days  
 
-
 # -- Template for siconos build-test-install jobs --
 # - Pull an image (possibly from siconos registry)
 #   named  IMAGE_NAME
@@ -152,3 +148,13 @@ stages:
     GIT_STRATEGY: none
   stage: test
 
+# -- Template for siconos build-test-install jobs --
+# - Pull an image (possibly from siconos registry)
+#   named  IMAGE_NAME
+# - Run for all branches and for all push
+.siconos-full:
+  extends: .siconos-ctest
+  variables:
+    ctest_mode: all
+    GIT_STRATEGY: clone
+  stage: configure
