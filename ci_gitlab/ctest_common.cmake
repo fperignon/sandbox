@@ -78,18 +78,12 @@ function(set_site_name)
   string(STRIP ${osname} osname)
   string(STRIP ${osplatform} osplatform)
 
-  # Host description
-  #if(NOT OSNAME)
-  #  set(OSNAME ${osname}) # Use -DOSNAME=docker_image name on CI
-  #endif()
-    
   if(CI_GITLAB)
-    # string(STRIP $ENV{CI_RUNNER_DESCRIPTION} hostname)
+    string(REPLACE "$ENV{$CI_REGISTRY_IMAGE}/" $ENV{CI_JOB_IMAGE} dockerimagename)
+    string(STRIP ${dockerimagename} dockerimagename)
+    set(osname "${osname}-${dockerimagename})
+    string(STRIP ${osname} osname)
     set(hostname "registry-on-gitlab-runner-$ENV{CI_RUNNER_DESCRIPTION}")
-    # With gitlab-ci, runner name is too long and useless ...
-    #string(REPLACE
-    #  "gricad-registry.univ-grenoble-alpes.fr/$ENV{CI_PROJECT_PATH}/" ""
-    #  OSNAME ${OSNAME})
   elseif(CI_TRAVIS)
     set(hostname "${hostname}-travis") 
   endif()
