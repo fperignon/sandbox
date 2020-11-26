@@ -64,10 +64,15 @@ function(set_site_name)
     set(osplatform ${CMAKE_SYSTEM_PROCESSOR})
   endif()
 
+  string(STRIP ${osname} osname)
+  string(STRIP ${osversion} osversion)
+  string(STRIP ${osplatform} osplatform)
+
   # With gitlab-ci, runner name is too long and useless ...
   string(FIND ${hostname} "runner-" on_ci) 
   if(on_ci GREATER -1)
     set(hostname "runner: $ENV{CI_RUNNER_DESCRIPTION}")
+    string(STRIP ${hostname} hostname)
   endif()
 
   # Host description
@@ -80,7 +85,7 @@ function(set_site_name)
       "gricad-registry.univ-grenoble-alpes.fr/$ENV{CI_PROJECT_PATH}/" ""
       OSNAME ${OSNAME})
     endif()
-  set(_SITE "${OSNAME} ${osrelease}, ${osplatform}, ${hostname}")
+  set(_SITE "${OSNAME}-${osrelease}-${osplatform}-${hostname}")
   string(STRIP _SITE ${_SITE})
   
   if(CI_GITLAB)
