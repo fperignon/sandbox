@@ -63,11 +63,11 @@ function(set_site_name)
     cmake_host_system_information(RESULT hostname QUERY HOSTNAME)
 
     message(STATUS "ok ${osname}")
-     message(STATUS "ok ${osrelease}")
+    message(STATUS "ok ${osrelease}")
     message(STATUS "ok ${hostname}")
     message(STATUS "ok ${osplatform}")
     message(STATUS "ok ${fqdn}")
-     message(STATUS "ok ${procname}")
+    message(STATUS "ok ${procname}")
    
    
   else()
@@ -79,23 +79,22 @@ function(set_site_name)
   string(STRIP ${osplatform} osplatform)
 
   # Host description
-  if(NOT OSNAME)
-    set(OSNAME ${osname}) # Use -DOSNAME=docker_image name on CI
-  endif()
-  
-  
+  #if(NOT OSNAME)
+  #  set(OSNAME ${osname}) # Use -DOSNAME=docker_image name on CI
+  #endif()
+    
   if(CI_GITLAB)
-    string(STRIP $ENV{CI_RUNNER_DESCRIPTION} hostname)
-    set(hostname "registry-on-gitlab-runner-${hostname}")
+    # string(STRIP $ENV{CI_RUNNER_DESCRIPTION} hostname)
+    set(hostname "registry-on-gitlab-runner-$ENV{CI_RUNNER_DESCRIPTION}")
     # With gitlab-ci, runner name is too long and useless ...
-    string(REPLACE
-      "gricad-registry.univ-grenoble-alpes.fr/$ENV{CI_PROJECT_PATH}/" ""
-      OSNAME ${OSNAME})
+    #string(REPLACE
+    #  "gricad-registry.univ-grenoble-alpes.fr/$ENV{CI_PROJECT_PATH}/" ""
+    #  OSNAME ${OSNAME})
   elseif(CI_TRAVIS)
     set(hostname "${hostname}-travis") 
   endif()
 
-  set(_SITE "${OSNAME}-${osrelease}-${osplatform}-${hostname}")
+  set(_SITE "${osname}-${osrelease}-${osplatform}-${hostname}")
   string(STRIP _SITE ${_SITE})
     
   set(CTEST_SITE "${_SITE}" PARENT_SCOPE)
@@ -108,7 +107,7 @@ function(set_cdash_build_name)
   if(CI_GITLAB)
     set(branch_commit "$ENV{CI_COMMIT_REF_NAME}-$ENV{CI_COMMIT_SHORT_SHA}")
   elseif(CI_TRAVIS) 
-    string(SUBSTRING $ENV{TRAVIS_COMMIT} 0 7 TRAVIS_SHORT_COMMIT})
+    string(SUBSTRING $ENV{TRAVIS_COMMIT} 1 7 TRAVIS_SHORT_COMMIT})
     string(STRIP ${TRAVIS_SHORT_COMMIT} TRAVIS_SHORT_COMMIT)
     set(branch_commit "$ENV{TRAVIS_BRANCH}-${TRAVIS_SHORT_COMMIT}")
   else()
