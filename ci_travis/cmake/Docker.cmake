@@ -165,8 +165,8 @@ macro(add_docker_targets)
   add_custom_target(
     ${DOCKER_IMAGE_AS_DIR}-build
     COMMENT "Docker Build : ${DOCKER_IMAGE}"
-    COMMAND cd Docker/Context/${DOCKER_REPOSITORY}/${DOCKER_IMAGE_AS_DIR} && docker build --build-arg TRAVIS --build-arg TRAVIS_BRANCH -t ${DOCKER_REPOSITORY}/${DOCKER_IMAGE} . > /dev/null
-    )
+    COMMAND cd Docker/Context/${DOCKER_REPOSITORY}/${DOCKER_IMAGE_AS_DIR} && docker build -t ${DOCKER_REPOSITORY}/${DOCKER_IMAGE}) . #> /dev/null
+    #)
 
   # bind DOCKER_WORKDIR inside container
   add_custom_command(
@@ -193,10 +193,10 @@ macro(add_docker_targets)
   add_custom_target(
     ${DOCKER_IMAGE_AS_DIR}-cmd
     COMMENT "Docker cmd : ${DOCKER_IMAGE}"
-    COMMAND ${DOCKER_COMMAND} run -h ${DOCKER_HOSTNAME} --rm=true ${DOCKER_VFLAGS} --env SOURCE_DIR=${DOCKER_PROJECT_SOURCE_DIR} --volumes-from=${DOCKER_WORKDIR_VOLUME} --volumes-from=${DOCKER_REPOSITORY}-${DOCKER_IMAGE}-usr-local --workdir=${DOCKER_WORKDIR} -t ${DOCKER_REPOSITORY}/${DOCKER_IMAGE} )
+    COMMAND ${DOCKER_COMMAND} run -h ${DOCKER_HOSTNAME} --rm=true ${DOCKER_VFLAGS} --env SOURCE_DIR=${DOCKER_PROJECT_SOURCE_DIR} -e TRAVIS -e TRAVIS_BRANCH -e TRAVIS_COMMIT --volumes-from=${DOCKER_WORKDIR_VOLUME} --volumes-from=${DOCKER_REPOSITORY}-${DOCKER_IMAGE}-usr-local --workdir=${DOCKER_WORKDIR} -t ${DOCKER_REPOSITORY}/${DOCKER_IMAGE} )
 
   set(DOCKER_COMMAND_FULL
-    ${DOCKER_COMMAND} run -h ${DOCKER_HOSTNAME} --rm=true ${DOCKER_VFLAGS} --volumes-from=${DOCKER_WORKDIR_VOLUME} --volumes-from=${DOCKER_REPOSITORY}-${DOCKER_IMAGE}-usr-local --workdir=${DOCKER_WORKDIR})
+    ${DOCKER_COMMAND} run -h ${DOCKER_HOSTNAME} -e TRAVIS_BRANCH -e TRAVIS_COMMIT --rm=true ${DOCKER_VFLAGS} --volumes-from=${DOCKER_WORKDIR_VOLUME} --volumes-from=${DOCKER_REPOSITORY}-${DOCKER_IMAGE}-usr-local --workdir=${DOCKER_WORKDIR})
 
   add_custom_target(
     ${DOCKER_IMAGE_AS_DIR}-cmake
