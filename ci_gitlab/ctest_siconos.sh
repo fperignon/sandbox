@@ -40,7 +40,6 @@ fi
 # - model (from gitlab-ci file), Dashboard client mode can be Continuous, Nightly, Experimental, check https://cmake.org/cmake/help/latest/manual/ctest.1.html#ctest-start-step
 # - SICONOS_INSTALL_DIR : where Siconos will be installed
 # - USER_FILE : user options file.
-# - OSNAME : set to IMAGE_NAME
 # - ALLOW_PARALLEL_BUILD : set to 1 to allow -jN, 0 to restrict to -j1.
 # - CTEST_MODE : choose which parts of ctest process must be run (configure, build, tests or all)
 cd $CI_PROJECT_DIR/build

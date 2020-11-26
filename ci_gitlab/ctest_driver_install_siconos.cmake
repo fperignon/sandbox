@@ -7,8 +7,6 @@
 # - SICONOS_INSTALL_DIR : where to install siconos. Default : ../install-siconos
 # - USER_FILE : user option file used by cmake to configure siconos. Default : siconos_conf.cmake.
 #   Warning : always searched in siconos-tutorials/ci directory.
-# - OSNAME : host system name (used to qualify cdash build). If not set, try to catch info
-#   using common commands (lsb_release ...)
 # ----------------------------------------------
 
 
@@ -19,12 +17,6 @@ message("--- Start conf for siconos ctest pipeline.")
 # -- CI_PROJECT_DIR is a required environment variable --
 # --> set by default for gitlab-ci, even inside the docker container
 # --> unknown in docker container run with travis/siconos pipeline.
-
-execute_process(COMMAND env
-  OUTPUT_VARIABLE envlist)
-message("env ?? ${envlist}")
-
-
 if(DEFINED ENV{TRAVIS})
   if($ENV{TRAVIS} STREQUAL true)
     set(CI_TRAVIS ON)
