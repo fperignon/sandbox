@@ -75,13 +75,15 @@ function(set_site_name)
     set(OSNAME ${osname}) # Use -DOSNAME=docker_image name on CI
   endif()
   
-  string(REPLACE
-    "gricad-registry.univ-grenoble-alpes.fr/nonsmooth/siconos/"
-    "registry, "
-    OSNAME ${OSNAME})
+  if(CI_GITLAB)
+    string(REPLACE
+      "gricad-registry.univ-grenoble-alpes.fr/$ENV{CI_PROJECT_PATH}" ""
+      OSNAME ${OSNAME})
+    set(_SITE "${OSNAME} ${osrelease}, ${osplatform}, ${hostname}")
+    string(STRIP _SITE ${_SITE})
+    set(CTEST_SITE "${_SITE}" PARENT_SCOPE)
+  endif()
   
-  set(CTEST_SITE "${OSNAME} ${osrelease}, ${osplatform}, ${hostname}" PARENT_SCOPE)
-
 endfunction()
 # set build name, according to host, ci, git status ...
 function(set_cdash_build_name)
