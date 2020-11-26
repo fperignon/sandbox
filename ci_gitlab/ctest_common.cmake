@@ -77,7 +77,7 @@ function(set_site_name)
   if(CI_GITLAB)
   message(" oosoqsoo o oo o  $ENV{CI_REGISTRY_IMAGE} and $ENV{CI_JOB_IMAGE}")
 
-    string(REPLACE "${CI_REGISTRY_IMAGE}/" " " dockerimagename $ENV{CI_JOB_IMAGE} )
+    string(REPLACE "\${CI_REGISTRY_IMAGE}/" " " dockerimagename $ENV{CI_JOB_IMAGE} )
    message(" oosoqsoo o oo o  ${dockerimagename}")
     string(STRIP ${dockerimagename} dockerimagename)
     set(osname "${osname}-${dockerimagename}")
