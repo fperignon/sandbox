@@ -136,6 +136,9 @@ macro(add_docker_targets)
   message(STATUS "Docker make test flags : ${DOCKER_MAKE_TEST_FLAGS}")
   message(STATUS "Docker hostname : ${DOCKER_HOSTNAME}")
 
+  execute_process(COMMAND cat Docker/Context/${DOCKER_REPOSITORY}/${DOCKER_IMAGE_AS_DIR}
+    OUTPUT_VARIABLE dockfile)
+  message("dockerfile ? ${dockfile}")
 
   # ================== Create targets ==================
   set(ENV{CI_PROJECT_DIR} ${CMAKE_SOURCE_DIR}/..)
@@ -196,7 +199,7 @@ macro(add_docker_targets)
     COMMAND ${DOCKER_COMMAND} run -h ${DOCKER_HOSTNAME} --rm=true ${DOCKER_VFLAGS} --env SOURCE_DIR=${DOCKER_PROJECT_SOURCE_DIR} -e TRAVIS -e TRAVIS_BRANCH -e TRAVIS_COMMIT --volumes-from=${DOCKER_WORKDIR_VOLUME} --volumes-from=${DOCKER_REPOSITORY}-${DOCKER_IMAGE}-usr-local --workdir=${DOCKER_WORKDIR} -t ${DOCKER_REPOSITORY}/${DOCKER_IMAGE} )
 
   set(DOCKER_COMMAND_FULL
-    ${DOCKER_COMMAND} run -h ${DOCKER_HOSTNAME} -e TRAVIS_BRANCH -e TRAVIS_COMMIT --rm=true ${DOCKER_VFLAGS} --volumes-from=${DOCKER_WORKDIR_VOLUME} --volumes-from=${DOCKER_REPOSITORY}-${DOCKER_IMAGE}-usr-local --workdir=${DOCKER_WORKDIR})
+    ${DOCKER_COMMAND} run -h ${DOCKER_HOSTNAME} -e TRAVIS -e TRAVIS_BRANCH -e TRAVIS_COMMIT --rm=true ${DOCKER_VFLAGS} --volumes-from=${DOCKER_WORKDIR_VOLUME} --volumes-from=${DOCKER_REPOSITORY}-${DOCKER_IMAGE}-usr-local --workdir=${DOCKER_WORKDIR})
 
   add_custom_target(
     ${DOCKER_IMAGE_AS_DIR}-cmake
