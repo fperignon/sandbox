@@ -21,9 +21,15 @@ message("--- Start conf for siconos ctest pipeline.")
 # --> unknown in docker container run with travis/siconos pipeline.
 
 if(defined $ENV{TRAVIS})
-  set(CI_TRAVIS ON)
-  set(ENV{CI_PROJECT_DIR} ${CTEST_SOURCE_DIRECTORY})
-endif(()
+  if($ENV{TRAVIS} STREQUAL true)
+    set(CI_TRAVIS ON)
+    set(ENV{CI_PROJECT_DIR} ${CTEST_SOURCE_DIRECTORY})
+  endif()
+elseif(defined $ENV{GITLAB_CI})
+  if($ENV{GITLAB_CI} STREQUAL true)
+    set(CI_GITLAB ON)
+  endif()
+endif()
   
 if(NOT DEFINED ENV{CI_PROJECT_DIR} )
   message(FATAL_ERROR "Please set env variable CI_PROJECT_DIR to siconos sources directory (git repo).")
