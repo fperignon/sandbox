@@ -121,9 +121,8 @@ function(set_cdash_build_name)
   #   string(STRIP ${_name} _name)
   # endif()
 
-  #set(CTEST_BUILD_NAME "${_name}" PARENT_SCOPE)
-  set(CTEST_BUILD_NAME "toto" PARENT_SCOPE)
-
+  set(CTEST_BUILD_NAME "${_name}" PARENT_SCOPE)
+  
 endfunction()
 
 # ------------------
