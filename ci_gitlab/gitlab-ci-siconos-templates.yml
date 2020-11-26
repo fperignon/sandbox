@@ -117,6 +117,7 @@ stages:
     GIT_STRATEGY: clone
     ctest_mode: Configure
   stage: configure
+  allow_failure: true
   artifacts:
     paths:
       - $CI_PROJECT_DIR
@@ -132,6 +133,7 @@ stages:
     ctest_mode: Build
     GIT_STRATEGY: none
   stage: build
+  allow_failure: true
   artifacts:
     paths:
       - $CI_PROJECT_DIR

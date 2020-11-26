@@ -3,60 +3,12 @@ include:
   - ci_gitlab/gitlab-ci-siconos-templates.yml
   #- template: Code-Quality.gitlab-ci.yml
 
-#job2:
-#  stage: build
-#  #allow_failure: false
-#  script:
-#    - echo "bonjour"
-#  only:
-#    - master
-
-#job3:
-#  stage: test
-#  #allow_failure: false
-#  script:
-#    - echo "bonjour"
-#  dependencies: [job2]
-#  only:
-#    - master
-
-# ---- Siconos build jobs -----
-
-# metrics:
-#   image: $CI_REGISTRY_IMAGE/ubuntu18.04
-#   stage: docker-build
-#   script:
-#     - echo 'metric_name metric_value' > metrics.txt
-#   artifacts:
-#     reports:
-#       metrics: metrics.txt
-
-
-#code_quality:
-#  stage: test
-#  artifacts:
-#    paths: [gl-code-quality-report.json]
-
-
-# install_siconos:ubuntu18.04:
-#   variables:
-#     IMAGE_NAME: $CI_REGISTRY_IMAGE/ubuntu18.04
-#     cdash_submit: 1
-#     user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
-#   extends: .siconos-build
-#   artifacts:
-#     paths:
-#       - build
-
-# Siconos build and install, default config
-# (based on cmake/default_siconos.cmake)
-# on ubuntu 18.04.
-full:ubuntu18.04:
-    variables:
-      IMAGE_NAME: $CI_REGISTRY_IMAGE/ubuntu18.04
-      cdash_submit: 1
-      user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
-    extends: .siconos-full
+# full:ubuntu18.04:
+#     variables:
+#       IMAGE_NAME: $CI_REGISTRY_IMAGE/ubuntu18.04
+#       cdash_submit: 1
+#       user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
+#     extends: .siconos-full
 
 configure:debian-buster:
    variables:
@@ -81,4 +33,30 @@ test:debian-buster:
       user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
     dependencies:
       - build:debian-buster
+    extends: .siconos-test
+
+
+configure:ubuntu18.04:
+   variables:
+     IMAGE_NAME: $CI_REGISTRY_IMAGE/ubuntu18.04
+     cdash_submit: 1
+     user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
+   extends: .siconos-configure
+
+build:ubuntu18.04:
+    variables:
+      IMAGE_NAME: $CI_REGISTRY_IMAGE/ubuntu18.04
+      cdash_submit: 1
+      user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
+    extends: .siconos-build
+    dependencies:
+      - configure:ubuntu18.04
+
+test:ubuntu18.04:
+    variables:
+      IMAGE_NAME: $CI_REGISTRY_IMAGE/ubuntu18.04
+      cdash_submit: 1
+      user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
+    dependencies:
+      - build:ubuntu18.04
     extends: .siconos-test
