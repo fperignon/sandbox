@@ -84,7 +84,12 @@ if(${CTEST_MODE} STREQUAL "Build" OR ${CTEST_MODE} STREQUAL "all")
 
   message("\n\n=============== Start ctest_build =============== ")
 
+  cmake_host_system_information(RESULT NP QUERY NUMBER_OF_LOGICAL_CORES)
+  if(NOT ALLOW_PARALLEL_BUILD)
+    set(NP 1)
+  endif()
   ctest_build(
+    FLAGS -j${NP}
     CAPTURE_CMAKE_ERROR _STATUS
     RETURN_VALUE _RESULT
     #QUIET if quiet, travis failed because of missing outputs during a long time ...
@@ -107,8 +112,7 @@ if(${CTEST_MODE} STREQUAL "Test" OR ${CTEST_MODE} STREQUAL "all")
     RETURN_VALUE _RESULT
     # QUIET
     )
-  post_ctest(PHASE Test)
-
+  
   if(WITH_MEMCHECK AND CTEST_COVERAGE_COMMAND)
     #find_program(CTEST_COVERAGE_COMMAND NAMES gcov)
     # set(CTEST_COVERAGE_COMMAND gcov)
@@ -132,8 +136,6 @@ if(${CTEST_MODE} STREQUAL "Test" OR ${CTEST_MODE} STREQUAL "all")
       message(WARNING " *** submission failure *** ")
     endif()
   endif()
-
-  # error status check later, we try to submit even if tests failed.
 
   # -- memory check -- Skip this to 'enlight' submit process, since cdash inria is overbooked ...
   # if(CTEST_BUILD_CONFIGURATION MATCHES "Profiling")
