@@ -20,15 +20,14 @@ message("--- Start conf for siconos ctest pipeline.")
 # --> set by default for gitlab-ci, even inside the docker container
 # --> unknown in docker container run with travis/siconos pipeline.
 
-
+if(defined $ENV{TRAVIS})
+  set(CI_TRAVIS ON)
+  set(ENV{CI_PROJECT_DIR} ${CTEST_SOURCE_DIRECTORY})
+endif(()
+  
 if(NOT DEFINED ENV{CI_PROJECT_DIR} )
-  if(DEFINED CTEST_SOURCE_DIRECTORY) # travis case
-    set(ENV{CI_PROJECT_DIR} ${CTEST_SOURCE_DIRECTORY})
-  else()    
-    message(FATAL_ERROR "Please set env variable CI_PROJECT_DIR to siconos sources directory (git repo).")
-  endif()
+  message(FATAL_ERROR "Please set env variable CI_PROJECT_DIR to siconos sources directory (git repo).")
 endif()
-message(" TEST TRAVIS $ENV{CI_PROJECT_DIR}")
 
 # -- Definition of all variables required for ctest --
 include($ENV{CI_PROJECT_DIR}/ci_gitlab/ctest_common.cmake)

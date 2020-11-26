@@ -87,12 +87,10 @@ endfunction()
 function(set_cdash_build_name)
   # Get hash for commit of current version of Siconos
   # Saved by CI in CI_COMMIT_SHORT_SHA.
-  if(DEFINED ENV{GITLAB_CI})
-    if($ENV{GITLAB_CI} STREQUAL true)
-      set(branch_commit "$ENV{CI_COMMIT_REF_NAME}/$ENV{CI_COMMIT_SHORT_SHA}")
-    endif()
-    #elseif($ENV{TRAVIS}) # not defined inside docker container run from travis ... ?
-    #  set(branch_commit "$ENV{TRAVIS_BRANCH}/$ENV{TRAVIS_COMMIT}")
+  if(CI_GITLAB)
+    set(branch_commit "$ENV{CI_COMMIT_REF_NAME}/$ENV{CI_COMMIT_SHORT_SHA}")
+  elseif(CI_TRAVIS) # not defined inside docker container run from travis ... ?
+    set(branch_commit "$ENV{TRAVIS_BRANCH}/$ENV{TRAVIS_COMMIT}")
   else()
     find_package(Git)
     execute_process(COMMAND
@@ -109,7 +107,7 @@ function(set_cdash_build_name)
   endif()
   message("THIS IS A TEST ${branch_commit}")
   include(${CTEST_SOURCE_DIRECTORY}/cmake/SiconosVersion.cmake)  
-  set(_name "Siconos (${SICONOS_VERSION}-devel,${branch_commit})")
+  set(_name "Siconos(${SICONOS_VERSION}-devel,${branch_commit})")
   if(USER_FILE)
     get_filename_component(_fname ${USER_FILE} NAME)
     string(STRIP ${_fname} _fname)
@@ -125,8 +123,8 @@ endfunction()
 # Here starts ctest config
 # ------------------
 
-if($ENV{TRAVIS})
-
+if(CI_TRAVIS)
+  message("TRAVIS SEEN !!!!")
   list(APPEND CMAKE_MODULE_PATH ${CTEST_SOURCE_DIRECTORY}/ci_travis/cmake)
   list(APPEND CMAKE_MODULE_PATH ${CTEST_SOURCE_DIRECTORY}/ci_travis/config)
   list(APPEND CMAKE_MODULE_PATH ${CTEST_SOURCE_DIRECTORY}/ci_travis)
