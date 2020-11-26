@@ -88,7 +88,7 @@ function(set_site_name)
   endif()
  message(" RAAAAAA   ${hostname}")
   
-  set(_SITE "${osname}-${hostname}-${osrelease}-${osplatform}")
+  set(_SITE "${osname}-${osrelease}-${osplatform}-${hostname}")
   string(STRIP _SITE ${_SITE})
 
   set(CTEST_SITE "${_SITE}" PARENT_SCOPE)
