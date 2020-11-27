@@ -1,0 +1,30 @@
+# Templates for ci jobs
+include: 
+  - ci_gitlab/gitlab-ci-siconos-templates.yml
+  #- template: Code-Quality.gitlab-ci.yml
+
+
+configure:debian-buster:
+   variables:
+     IMAGE_NAME: $CI_REGISTRY_IMAGE/debian-buster
+     cdash_submit: 1
+     user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
+   extends: .siconos-configure
+
+build:debian-buster:
+    variables:
+      IMAGE_NAME: $CI_REGISTRY_IMAGE/debian-buster
+      cdash_submit: 1
+      user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
+    extends: .siconos-build
+    dependencies:
+      - configure:debian-buster
+
+test:debian-buster:
+    variables:
+      IMAGE_NAME: $CI_REGISTRY_IMAGE/debian-buster
+      cdash_submit: 1
+      user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
+    dependencies:
+      - build:debian-buster
+    extends: .siconos-test
