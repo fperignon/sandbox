@@ -41,6 +41,20 @@ test:debian-buster:
     needs: ["build:debian-buster"]
     extends: .siconos-test
 
+build:essai:
+    variables:
+      IMAGE_NAME: $CI_REGISTRY_IMAGE/debian-buster
+      cdash_submit: 1
+      user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_try.cmake
+    extends: .siconos-build
+
+test:essai:
+    variables:
+      IMAGE_NAME: $CI_REGISTRY_IMAGE/debian-buster
+      cdash_submit: 1
+      user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_try.cmake
+    extends: .siconos-build
+    needs: ["build:essai"]
 # ubuntu18.04:
 #   stage: configure
 #   trigger:
