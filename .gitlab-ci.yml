@@ -53,7 +53,7 @@ test:essai:
       IMAGE_NAME: $CI_REGISTRY_IMAGE/debian-buster
       cdash_submit: 1
       user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_try.cmake
-    extends: .siconos-build
+    extends: .siconos-test
     needs: ["build:essai"]
 # ubuntu18.04:
 #   stage: configure
