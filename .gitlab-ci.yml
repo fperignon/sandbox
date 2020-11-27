@@ -11,14 +11,44 @@ include:
 #        user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
 #      extends: .siconos-full
 
-ubuntu18.04:
-  stage: configure
-  trigger:
-    include:
-      - ci_gitlab/ubuntu.yml
+full:ubuntu18.04:
+      variables:
+        IMAGE_NAME: $CI_REGISTRY_IMAGE/ubuntu18.04
+        cdash_submit: 1
+        user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
+      extends: .siconos-full
+      
+configure:debian-buster:
+   variables:
+     IMAGE_NAME: $CI_REGISTRY_IMAGE/debian-buster
+     cdash_submit: 1
+     user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
+   extends: .siconos-configure
 
-debianbuster:
-  stage: configure
-  trigger:
-    include:
-      - ci_gitlab/debianbuster.yml
+build:debian-buster:
+    variables:
+      IMAGE_NAME: $CI_REGISTRY_IMAGE/debian-buster
+      cdash_submit: 1
+      user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
+    extends: .siconos-build
+    needs: ["configure:debian-buster"]
+
+test:debian-buster:
+    variables:
+      IMAGE_NAME: $CI_REGISTRY_IMAGE/debian-buster
+      cdash_submit: 1
+      user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
+    needs: ["build:debian-buster"]
+    extends: .siconos-test
+
+# ubuntu18.04:
+#   stage: configure
+#   trigger:
+#     include:
+#       - ci_gitlab/ubuntu.yml
+
+# debianbuster:
+#   stage: configure
+#   trigger:
+#     include:
+#       - ci_gitlab/debianbuster.yml
