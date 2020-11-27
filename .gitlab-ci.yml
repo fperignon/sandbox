@@ -11,12 +11,12 @@ include:
 #        user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
 #      extends: .siconos-full
 
-full:ubuntu18.04:
-      variables:
-        IMAGE_NAME: $CI_REGISTRY_IMAGE/ubuntu18.04
-        cdash_submit: 1
-        user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
-      extends: .siconos-full
+# full:ubuntu18.04:
+#       variables:
+#         IMAGE_NAME: $CI_REGISTRY_IMAGE/ubuntu18.04
+#         cdash_submit: 1
+#         user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
+#       extends: .siconos-full
       
 configure:debian-buster:
    variables:
@@ -41,12 +41,20 @@ test:debian-buster:
     needs: ["build:debian-buster"]
     extends: .siconos-test
 
+configure:essai:
+   variables:
+     IMAGE_NAME: $CI_REGISTRY_IMAGE/debian-buster
+     cdash_submit: 1
+     user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_try.cmake
+   extends: .siconos-configure
+
 build:essai:
     variables:
       IMAGE_NAME: $CI_REGISTRY_IMAGE/debian-buster
       cdash_submit: 1
       user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_try.cmake
     extends: .siconos-build
+    needs: ["configure:essai"]
 
 test:essai:
     variables:
