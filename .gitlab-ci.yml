@@ -49,28 +49,28 @@ debian-buster:test:
     needs: ["debian-buster:build"]
     extends: .siconos-test
 
-essai:configure:
-   variables:
-     IMAGE_NAME: $CI_REGISTRY_IMAGE/debian-buster
-     cdash_submit: 1
-     user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_try.cmake
-   extends: .siconos-configure
+# essai:configure:
+#    variables:
+#      IMAGE_NAME: $CI_REGISTRY_IMAGE/debian-buster
+#      cdash_submit: 1
+#      user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_try.cmake
+#    extends: .siconos-configure
 
-essai:build:
-    variables:
-      IMAGE_NAME: $CI_REGISTRY_IMAGE/debian-buster
-      cdash_submit: 1
-      user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_try.cmake
-    extends: .siconos-build
-    needs: ["essai:configure"]
+# essai:build:
+#     variables:
+#       IMAGE_NAME: $CI_REGISTRY_IMAGE/debian-buster
+#       cdash_submit: 1
+#       user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_try.cmake
+#     extends: .siconos-build
+#     needs: ["essai:configure"]
 
-essai:test:
-    variables:
-      IMAGE_NAME: $CI_REGISTRY_IMAGE/debian-buster
-      cdash_submit: 1
-      user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_try.cmake
-    extends: .siconos-test
-    needs: ["essai:build"]
+# essai:test:
+#     variables:
+#       IMAGE_NAME: $CI_REGISTRY_IMAGE/debian-buster
+#       cdash_submit: 1
+#       user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_try.cmake
+#     extends: .siconos-test
+#     needs: ["essai:build"]
 
 # Try to generate sico install
 #debianbuster:install:
