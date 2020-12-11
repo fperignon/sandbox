@@ -44,4 +44,5 @@ fi
 # - CTEST_MODE : choose which parts of ctest process must be run (configure, build, tests or all)
 cd $CI_PROJECT_DIR/build
 #git rev-parse HEAD
-ctest -S ${CI_PROJECT_DIR}/ci_gitlab/ctest_driver_install_siconos.cmake -Dmodel=$ctest_build_model -DSICONOS_INSTALL_DIR=${CI_PROJECT_DIR}/install-siconos -DUSER_FILE=$user_file -DALLOW_PARALLEL_BUILD=$allow_parallel_build -DCDASH_SUBMIT=$cdash_submit -V -DCTEST_MODE=${ctest_mode}
+#ctest -S ${CI_PROJECT_DIR}/ci_gitlab/ctest_driver_install_siconos.cmake -Dmodel=$ctest_build_model -DSICONOS_INSTALL_DIR=${CI_PROJECT_DIR}/install-siconos #-DUSER_FILE=$user_file -DALLOW_PARALLEL_BUILD=$allow_parallel_build -DCDASH_SUBMIT=$cdash_submit -V -DCTEST_MODE=${ctest_mode}
+ctest -S ${CI_PROJECT_DIR}/ci_gitlab/ctest_driver_install_siconos.cmake -Dmodel=$ctest_build_model -DUSER_FILE=$user_file -DALLOW_PARALLEL_BUILD=$allow_parallel_build -DCDASH_SUBMIT=$cdash_submit -V -DCTEST_MODE=${ctest_mode}
