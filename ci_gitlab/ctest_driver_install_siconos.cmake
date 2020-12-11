@@ -19,11 +19,6 @@ message("--- Start conf for siconos ctest pipeline.")
 # --> set by default for gitlab-ci, even inside the docker container
 # --> unknown in docker container run with travis/siconos pipeline.
 
-execute_process(COMMAND env
-  OUTPUT_VARIABLE envlist)
-message("env ?? ${envlist}")
-
-
 if(DEFINED ENV{TRAVIS})
   if($ENV{TRAVIS} STREQUAL true)
     set(CI_TRAVIS ON)
@@ -41,11 +36,12 @@ endif()
 
 # -- Definition of all variables required for ctest --
 include($ENV{CI_PROJECT_DIR}/ci_gitlab/ctest_common.cmake)
-
-if(USER_FILE)
-  # Push user file as notes to cdash.
-  set(CTEST_NOTES_FILES ${USER_FILE})
-endif()
+    
+# Write a note file for cdash server.
+# Content :
+# - info. regarding the runner, the system
+# - siconos config (user option file)
+write_notes()
 
 # =============  Run ctest steps ================
 # Either one by one (to split ci jobs) if CTEST_MODE=Configure, Build, Test or

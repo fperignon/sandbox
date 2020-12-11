@@ -56,7 +56,6 @@ function(set_site_name)
   if(${CMAKE_VERSION} VERSION_GREATER "3.10.3") 
     # https://cmake.org/cmake/help/latest/command/cmake_host_system_information.html
     cmake_host_system_information(RESULT osname QUERY OS_NAME)
-    cmake_host_system_information(RESULT osrelease QUERY OS_RELEASE)
     cmake_host_system_information(RESULT osplatform QUERY OS_PLATFORM)
     cmake_host_system_information(RESULT hostname QUERY HOSTNAME)
   else()
@@ -70,14 +69,13 @@ function(set_site_name)
   if(CI_GITLAB)
     string(SUBSTRING $ENV{CI_JOB_IMAGE} 19 -1 dockerimagename) 
     string(STRIP ${dockerimagename} dockerimagename)
-    set(hostname "[ ${dockerimagename} registry ] [ gitlab-runner $ENV{CI_RUNNER_DESCRIPTION} ]")
+    set(hostname "[${dockerimagename} from gitlab registry]")
   elseif(CI_TRAVIS)
     set(hostname "${hostname}-travis") 
   endif()
   
-  set(_SITE "${osname}-${osrelease}-${osplatform}-${hostname}")
+  set(_SITE "${osname}-${osplatform}${hostname}")
   string(STRIP _SITE ${_SITE})
-
   set(CTEST_SITE "${_SITE}" PARENT_SCOPE)
 endfunction()
 
@@ -116,6 +114,37 @@ function(set_cdash_build_name)
 
   set(CTEST_BUILD_NAME "${_name}" PARENT_SCOPE)
   
+endfunction()
+
+# Write a note file for cdash server.
+# Content :
+# - info. regarding the runner, the system
+# - siconos config (user option file)
+function(write_notes)
+  if(${CMAKE_VERSION} VERSION_GREATER "3.10.3") 
+    # https://cmake.org/cmake/help/latest/command/cmake_host_system_information.html
+    cmake_host_system_information(RESULT osrelease QUERY OS_RELEASE)
+    cmake_host_system_information(RESULT hostname QUERY HOSTNAME)
+    file(APPEND notes.txt "- osrelease: ${osrelease}\n")
+  endif() 
+
+  if(CI_GITLAB)
+     file(APPEND notes.txt "- Runner: ci-gitlab runner $ENV{CI_RUNNER_DESCRIPTION}\n")
+  elseif(CI_TRAVIS) 
+    file(APPEND notes.txt "- Runner: travis runner $ENV{CI_RUNNER_DESCRIPTION}\n")
+    file(APPEND notes.txt "- details on job: $ENV{TRAVIS_JOB_WEB_URL}\n")
+    file(APPEND notes.txt "- CPU arch: $ENV{TRAVIS_CPU_ARCH}\n")
+  else()
+    file(APPEND notes.txt "- host name: ${hostname}\n")
+  endif() 
+ 
+  if(USER_FILE)
+    file(APPEND notes.txt " ------- Siconos user options file ------\n\n")
+    file(READ ${USER_FILE} _options_file)
+    file(APPEND notes.txt ${_options_file})
+  endif()
+  set(CTEST_NOTES_FILES notes.txt PARENT_SCOPE)
+
 endfunction()
 
 # ------------------

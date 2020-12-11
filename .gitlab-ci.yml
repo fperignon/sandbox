@@ -1,68 +1,100 @@
-## Templates for ci jobs test
+# Templates for ci jobs - test cdash
 include: 
   - ci_gitlab/gitlab-ci-siconos-templates.yml
   #- template: Code-Quality.gitlab-ci.yml
 
+# test workflow aaa
+workflow:
+  rules:
+    - if: $CI_COMMIT_MESSAGE =~ /-wip$/
+      when: never
+    - if: $CI_COMMIT_MESSAGE =~ /AARG$/
+      when: never
+    - if: '$CI_PIPELINE_SOURCE == "parent_pipeline"'
+      when: never
+    - when: always
 
-# full:ubuntu18.04:
-#      variables:
-#        IMAGE_NAME: $CI_REGISTRY_IMAGE/ubuntu18.04
-#        cdash_submit: 1
-#        user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
-#      extends: .siconos-full
+docker-build:debian-buster:
+  variables:
+    IMAGE_NAME: debian-buster
+  extends: .docker-build
 
-# full:ubuntu18.04:
-#       variables:
-#         IMAGE_NAME: $CI_REGISTRY_IMAGE/ubuntu18.04
-#         cdash_submit: 1
-#         user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
-#       extends: .siconos-full
+ubuntu18.04:full:
+      variables:
+        IMAGE_NAME: $CI_REGISTRY_IMAGE/ubuntu18.04
+        cdash_submit: 1
+        user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
+      extends: .siconos-full
       
-configure:debian-buster:
+debian-buster:configure:
    variables:
      IMAGE_NAME: $CI_REGISTRY_IMAGE/debian-buster
      cdash_submit: 1
      user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
    extends: .siconos-configure
 
-build:debian-buster:
+debian-buster:build:
     variables:
       IMAGE_NAME: $CI_REGISTRY_IMAGE/debian-buster
       cdash_submit: 1
       user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
     extends: .siconos-build
-    needs: ["configure:debian-buster"]
+    needs: ["debian-buster:configure"]
 
-test:debian-buster:
+debian-buster:test:
     variables:
       IMAGE_NAME: $CI_REGISTRY_IMAGE/debian-buster
       cdash_submit: 1
       user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
-    needs: ["build:debian-buster"]
+    needs: ["debian-buster:build"]
     extends: .siconos-test
 
-configure:essai:
+essai:configure:
    variables:
      IMAGE_NAME: $CI_REGISTRY_IMAGE/debian-buster
      cdash_submit: 1
      user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_try.cmake
    extends: .siconos-configure
 
-build:essai:
+essai:build:
     variables:
       IMAGE_NAME: $CI_REGISTRY_IMAGE/debian-buster
       cdash_submit: 1
       user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_try.cmake
     extends: .siconos-build
-    needs: ["configure:essai"]
+    needs: ["essai:configure"]
 
-test:essai:
+essai:test:
     variables:
       IMAGE_NAME: $CI_REGISTRY_IMAGE/debian-buster
       cdash_submit: 1
       user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_try.cmake
     extends: .siconos-test
-    needs: ["build:essai"]
+    needs: ["essai:build"]
+
+# Try to generate sico install
+#debianbuster:install:
+#  variables:
+#    siconos_docker_name: siconos-$CI_COMMIT_REF_NAME-debian-buster
+#  extends: .siconos-install
+#  needs: ["debian-buster:build"]
+
+
+debianbuster:install:
+  variables:
+    IMAGE_NAME: $CI_REGISTRY_IMAGE/debian-buster
+    siconos_docker_name: siconos-$CI_COMMIT_REF_NAME-debian-buster
+  #allow_failure: true
+  extends: .siconos-install
+  needs: ["debian-buster:build"]
+
+ubuntu18:install:
+  variables:
+    IMAGE_NAME: $CI_REGISTRY_IMAGE/ubuntu18.04
+    siconos_docker_name: siconos-$CI_COMMIT_REF_NAME-ubuntu-bionic
+  extends: .siconos-install
+  needs: ["ubuntu18.04:full"]
+
 # ubuntu18.04:
 #   stage: configure
 #   trigger:
