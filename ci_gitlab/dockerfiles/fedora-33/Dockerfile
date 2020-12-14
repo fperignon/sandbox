@@ -1,4 +1,4 @@
-FROM fedora:31
+FROM fedora:33
 RUN dnf --setopt=deltarpm=false install -y \
 	make \
         cmake \

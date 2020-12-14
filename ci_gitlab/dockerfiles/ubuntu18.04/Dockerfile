@@ -1,5 +1,33 @@
-FROM gricad-registry.univ-grenoble-alpes.fr/ced2019/siconos/ubuntu18.04-no-python
+FROM ubuntu:18.04
+ENV TZ=Europe/Paris
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN apt update  && apt install -y -qq \
+        ntp \
+        cmake \
+        git-core \
+        make \
+        libboost-dev \
+        libboost-serialization-dev \
+        libboost-filesystem-dev \
+        libboost-timer-dev \
+        libboost-chrono-dev \
+        libgmp-dev \
+        gcc \
+        gfortran \
+        libgfortran3 \
+        g++ \
+        libopenblas-dev \
+        liblapacke-dev \
+        lp-solve \
+        liblpsolve55-dev \
+        python3 \
+        python3-packaging \
+        libpython3-dev \
+        libcppunit-dev \
+        libbullet-dev \
+        libfreetype6-dev \
+        freeglut3-dev \
+        vim  \
         swig \
         doxygen \
         python3-pip\
@@ -7,5 +35,6 @@ RUN apt update  && apt install -y -qq \
         python3-pytest \
 	valgrind \
         python3-lxml \
-        python3-h5py
+        python3-h5py \
+        python3-packaging
 RUN apt clean && apt autoremove
