@@ -1,4 +1,4 @@
-FROM gricad-registry.univ-grenoble-alpes.fr/nonsmooth/siconos/ubuntu20.04-no-python
+FROM gricad-registry.univ-grenoble-alpes.fr/ced2019/siconos/ubuntu20.04-no-python
 RUN apt update  && apt install -y -qq \
         swig \
         doxygen \
@@ -7,6 +7,5 @@ RUN apt update  && apt install -y -qq \
         python3-pytest \
 	    valgrind \
         python3-lxml \
-        python3-h5py
-RUN apt clean && apt autoremove
+        python3-h5py && apt clean && apt autoremove
 

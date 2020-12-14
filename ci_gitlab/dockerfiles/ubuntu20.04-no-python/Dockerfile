@@ -1,7 +1,6 @@
 FROM ubuntu:20.04
 ENV TZ=Europe/Paris
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-RUN apt update  && apt install -y -qq \
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone && apt update  && apt install -y -qq \
         ntp \
         cmake \
         git-core \
@@ -27,5 +26,4 @@ RUN apt update  && apt install -y -qq \
         libbullet-dev \
         libfreetype6-dev \
         freeglut3-dev \
-        vim
-RUN apt clean && apt autoremove
+        vim && apt clean && apt autoremove

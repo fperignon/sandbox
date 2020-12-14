@@ -1,7 +1,6 @@
 FROM ubuntu:18.04
 ENV TZ=Europe/Paris
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-RUN apt update  && apt install -y -qq \
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone && apt update  && apt install -y -qq \
         ntp \
         cmake \
         git-core \
@@ -36,5 +35,4 @@ RUN apt update  && apt install -y -qq \
 	valgrind \
         python3-lxml \
         python3-h5py \
-        python3-packaging
-RUN apt clean && apt autoremove
+        python3-packaging && apt clean && apt autoremove

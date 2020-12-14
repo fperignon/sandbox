@@ -31,5 +31,4 @@ RUN apt update  && apt install -y -qq \
         valgrind \
         python3-lxml \
         python3-h5py \
-        vim
-RUN apt clean && apt autoremove
+        vim && apt clean && apt autoremove
