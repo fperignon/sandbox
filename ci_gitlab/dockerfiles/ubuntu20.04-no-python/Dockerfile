@@ -14,7 +14,7 @@ RUN apt update  && apt install -y -qq \
         libgmp-dev \
         gcc \
         gfortran \
-        libgfortran3 \
+        libgfortran-10-dev \
         g++ \
         libopenblas-dev \
         liblapacke-dev \

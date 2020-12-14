@@ -16,48 +16,67 @@ workflow:
 
 # --- First, build docker images that contains all the required dependencies to build siconos ---
 # This step is optional and run only when the commit message starts with "[docker-build]"
-docker-build:debian-buster:
+debian-buster:docker-build:
   variables:
     IMAGE_NAME: debian-buster
   extends: .docker-build
 
-docker-build:debian-stretch:
+debian-stretch:docker-build:
   variables:
     IMAGE_NAME: debian-stretch
   extends: .docker-build
 
-docker-build:ubuntu20.4-no-python:
+ubuntu20.4-no-python:docker-build:
   variables:
     IMAGE_NAME: ubuntu20.04-no-python
   extends: .docker-build
 
-docker-build:ubuntu20.4:
+ubuntu20.4:docker-build:
   variables:
     IMAGE_NAME: ubuntu20.04
   extends: .docker-build
+  stage: docker-build-layer2
+  needs: ["docker-build:ubuntu20.04-no-python"]
 
-docker-build:ubuntu18.04:
+ubuntu20.4-oce:docker-build:
+  variables:
+    IMAGE_NAME: ubuntu20.04-oce
+  extends: .docker-build
+  stage: docker-build-layer3
+  needs: ["docker-build:ubuntu20.04"]
+
+ubuntu18.04:docker-build:
   variables:
     IMAGE_NAME: ubuntu18.04
   extends: .docker-build
 
-docker-build:opensuse-leap-15.0:
+# This job create a docker image with all required dependencies
+# (including serialization, python wrapper, bullet but not OCE)
+# It's based on ubuntu 18.04.
+ubuntu18.04-oce:docker-build:
+  variables:
+    IMAGE_NAME: ubuntu18.04-oce
+  extends: .docker-build
+  stage: docker-build-layer2
+  needs: ["docker-build:ubuntu18.04"]
+
+opensuse-leap-15.0:docker-build:
   variables:
     IMAGE_NAME: opensuse-leap-15.0
   extends: .docker-build
 
-docker-build:archlinux-oce:
+archlinux-oce:docker-build:
   variables:
     IMAGE_NAME: archlinux-oce
   extends: .docker-build
   when: manual
 
-docker-build:centos-7:
+centos-7:docker-build:
   variables:
     IMAGE_NAME: centos-7
   extends: .docker-build
 
-docker-build:fedora33:
+fedora33:docker-build:
   variables:
     IMAGE_NAME: fedora-33
   extends: .docker-build
