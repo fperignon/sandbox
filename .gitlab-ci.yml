@@ -3,7 +3,7 @@ include:
   - ci_gitlab/gitlab-ci-siconos-templates.yml
   #- template: Code-Quality.gitlab-ci.yml
 
-# test workflow
+# test workflows
 workflow:
   rules:
     - if: $CI_COMMIT_MESSAGE =~ /-wip$/
