@@ -19,9 +19,9 @@
 # mechanisms is "off" by default.
 # Check https://nonsmooth.gricad-pages.univ-grenoble-alpes.fr/siconos/install_guide/install_guide.html#id6
 # for details about components.
-set(COMPONENTS externals numerics CACHE INTERNAL "List of siconos components to build and install")
+set(COMPONENTS externals numerics kernel control mechanics io CACHE INTERNAL "List of siconos components to build and install")
 
-option(WITH_PYTHON_WRAPPER "Build and install python bindings using swig. Default = ON" OFF)
+option(WITH_PYTHON_WRAPPER "Build and install python bindings using swig. Default = ON" ON)
 
 # -- Serialization --
 # Warning : this is highly unstable. Developers only !
@@ -37,7 +37,7 @@ option(NO_RUNTIME_BUILD_DEP "Do not check for runtime dependencies. Useful only 
 option(WITH_UNSTABLE_TEST "Enable this to include all 'unstable' test. Default=OFF" OFF)
 option(BUILD_SHARED_LIBS "Building of shared libraries. Default = ON" ON)
 option(WITH_SYSTEM_INFO "Verbose mode to get some system/arch details. Default = OFF." OFF)
-option(WITH_TESTING "Enable 'make test' target" ON)
+option(WITH_TESTING "Enable 'make test' target" OFF)
 option(WITH_GIT "Consider sources are under GIT" OFF)
 
 
