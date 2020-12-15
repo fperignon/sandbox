@@ -6,6 +6,6 @@ RUN apt update  && apt install -y -qq \
         liboce-visualization-dev && apt clean && apt autoremove
 WORKDIR /home
 COPY ci_gitlab/dockerfiles/install_oce.sh /home
-ENV CI_PROJECT_DIR /home PYTHONPATH /home/install/site-packages
+ENV CI_PROJECT_DIR /home 
 RUN sh /home/install_oce.sh
-
+ENV PYTHONPATH /home/install/site-packages
