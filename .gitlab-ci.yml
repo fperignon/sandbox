@@ -135,6 +135,52 @@ ubuntu20.04:test:
     needs: ["ubuntu20.04:build"]
     extends: .siconos-test
 
+ubuntu20.04-oce:configure:
+   variables:
+     IMAGE_NAME: $CI_REGISTRY_IMAGE/ubuntu20.04-oce
+     cdash_submit: 1
+     user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_with_mechanisms.cmake
+   extends: .siconos-configure
+
+ubuntu20.04-oce:build:
+    variables:
+      IMAGE_NAME: $CI_REGISTRY_IMAGE/ubuntu20.04-oce
+      cdash_submit: 1
+      user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_with_mechanisms.cmake
+    extends: .siconos-build
+    needs: ["ubuntu20.04-oce:configure"]
+
+ubuntu20.04-oce:test:
+    variables:
+      IMAGE_NAME: $CI_REGISTRY_IMAGE/ubuntu20.04-oce
+      cdash_submit: 1
+      user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_with_mechanisms.cmake
+    needs: ["ubuntu20.04-oce:build"]
+    extends: .siconos-test
+
+fedora-33:configure:
+   variables:
+     IMAGE_NAME: $CI_REGISTRY_IMAGE/fedora-33
+     cdash_submit: 1
+     user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
+   extends: .siconos-configure
+
+fedora-33:build:
+    variables:
+      IMAGE_NAME: $CI_REGISTRY_IMAGE/fedora-33
+      cdash_submit: 1
+      user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
+    extends: .siconos-build
+    needs: ["fedora-33:configure"]
+
+fedora-33:test:
+    variables:
+      IMAGE_NAME: $CI_REGISTRY_IMAGE/fedora-33
+      cdash_submit: 1
+      user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
+    needs: ["fedora-33:build"]
+    extends: .siconos-test
+
 # essai:configure:
 #    variables:
 #      IMAGE_NAME: $CI_REGISTRY_IMAGE/debian-buster
@@ -174,12 +220,12 @@ debianbuster:install:
   extends: .siconos-install
   needs: ["debian-buster:build"]
 
-ubuntu18:install:
+ubuntu20-oce:install:
   variables:
-    IMAGE_NAME: $CI_REGISTRY_IMAGE/ubuntu18.04
-    siconos_docker_name: siconos-$CI_COMMIT_REF_NAME-ubuntu-bionic
+    IMAGE_NAME: $CI_REGISTRY_IMAGE/ubuntu20.04-oce
+    siconos_docker_name: siconos-$CI_COMMIT_REF_NAME-ubuntu-fossa
   extends: .siconos-install
-  needs: ["ubuntu18.04:full"]
+  needs: ["ubuntu20.04-oce:build"]
 
 # ubuntu18.04:
 #   stage: configure
