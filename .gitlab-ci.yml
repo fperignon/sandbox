@@ -230,12 +230,15 @@ ubuntu20-oce:install:
   extends: .siconos-install
   needs: ["ubuntu20.04-oce:build"]
 
-# ubuntu18.04:
-#   stage: configure
-#   trigger:
-#     include:
-#       - ci_gitlab/ubuntu.yml
 
+# -- Jobs on demand --
+# Triggered through the interface
+
+archlinux-oce:
+  stage: configure
+  trigger:
+    include:
+      - ci_gitlab/archlinux-oce.yml
 # debianbuster:
 #   stage: configure
 #   trigger:
