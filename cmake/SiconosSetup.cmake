@@ -17,22 +17,35 @@ include(SiconosVersion)
 # Current binary dir, for generated headers. Only at build time!
 include_directories($<BUILD_INTERFACE:${CMAKE_BINARY_DIR}>)
 
+# Add extra logs about git references (branch name, commit number ...)
+# Useful for documentation and continuous integration
+option(WITH_GIT "Consider sources are under GIT" OFF)
+
 if(WITH_GIT) # User defined option, default = off
   # Check if git is available
   # and get last commit id (long and short).
   # Saved in SOURCE_ABBREV_GIT_SHA1 and SOURCE_GIT_SHA1
   # These vars are useful for tests logs and 'write_notes' macro.
   find_package(Git)
-  if(GIT_FOUND)
+   if(GIT_FOUND)
     set(CTEST_GIT_COMMAND "${GIT_EXECUTABLE}" )     
     execute_process(COMMAND 
-      ${GIT_EXECUTABLE} log -n 1 --pretty=format:%h 
+      ${GIT_EXECUTABLE} rev-parse --short HEAD
       OUTPUT_VARIABLE SOURCE_ABBREV_GIT_SHA1
+      OUTPUT_STRIP_TRAILING_WHITESPACE
       WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
     
     execute_process(COMMAND 
-      ${GIT_EXECUTABLE} log -n 1 --pretty=format:%H
+      ${GIT_EXECUTABLE} rev-parse HEAD
       OUTPUT_VARIABLE SOURCE_GIT_SHA1
+      OUTPUT_STRIP_TRAILING_WHITESPACE
+      WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+
+    # git reference name (branch, tag ...) 
+    execute_process(COMMAND
+      ${GIT_EXECUTABLE} rev-parse --abbrev-ref HEAD
+      OUTPUT_VARIABLE COMMIT_REF_NAME
+      OUTPUT_STRIP_TRAILING_WHITESPACE
       WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
   endif()
 endif()
