@@ -41,14 +41,7 @@ if(WITH_GIT) # User defined option, default = off
       OUTPUT_STRIP_TRAILING_WHITESPACE
       WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
 
-    # git reference name (branch, tag ...) 
-    execute_process(COMMAND
-      ${GIT_EXECUTABLE} rev-parse --abbrev-ref HEAD
-      OUTPUT_VARIABLE COMMIT_REF_NAME
-      OUTPUT_STRIP_TRAILING_WHITESPACE
-      WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
-  endif()
-endif()
+ endif()
 
 # Save date/time into BUILD_TIMESTAMP var
 string(TIMESTAMP BUILD_TIMESTAMP)
