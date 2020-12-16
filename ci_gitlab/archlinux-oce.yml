@@ -27,9 +27,11 @@ archlinux-oce:test:
       cdash_submit: 1
       user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_with_mechanisms.cmake
     needs: ["archlinux-oce:build"]
-    extends: .siconos-testarchlinux-oce:install:
+    extends: .siconos-test
+
+archlinux-oce:install:
   variables:
-    IMAGE_NAME: $CI_REGISTRY_IMAGE/sources/ubuntu20.04-oce
-    siconos_docker_name: siconos-$CI_COMMIT_REF_NAME-ubuntu-fossa
+    IMAGE_NAME: $CI_REGISTRY_IMAGE/sources/archlinux-oce
+    siconos_docker_name: siconos-$CI_COMMIT_REF_NAME-archlinux-oce
   extends: .siconos-install
   needs: ["archlinux-oce:build"]
