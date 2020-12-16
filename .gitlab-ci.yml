@@ -26,9 +26,9 @@ debian-stretch:docker-build:
     IMAGE_NAME: debian-stretch
   extends: .docker-build
 
-ubuntu20.4-no-python:docker-build:
+ubuntu20.4-light:docker-build:
   variables:
-    IMAGE_NAME: ubuntu20.04-no-python
+    IMAGE_NAME: ubuntu20.04-light
   extends: .docker-build
 
 ubuntu20.4:docker-build:
@@ -36,7 +36,7 @@ ubuntu20.4:docker-build:
     IMAGE_NAME: ubuntu20.04
   extends: .docker-build
   stage: docker-build-layer2
-  needs: ["ubuntu20.4-no-python:docker-build"]
+  needs: ["ubuntu20.4-light:docker-build"]
 
 ubuntu20.4-oce:docker-build:
   variables:
@@ -112,6 +112,32 @@ debian-buster:test:
     needs: ["debian-buster:build"]
     extends: .siconos-test
 
+ubuntu20.04-fclib:configure:
+   variables:
+     IMAGE_NAME: $CI_REGISTRY_IMAGE/sources/ubuntu20.04
+     cdash_submit: 1
+     user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_with_fclib.cmake
+   extends: .siconos-configure
+   script:
+     - "sh ci_gitlab/dockerfiles/install_fclib.sh"
+     - "sh ci_gitlab/ctest_siconos.sh $ctest_mode $user_file" 
+
+ubuntu20.04-fclib:build:
+    variables:
+      IMAGE_NAME: $CI_REGISTRY_IMAGE/sources/ubuntu20.04
+      cdash_submit: 1
+      user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_with_fclib.cmake
+    extends: .siconos-build
+    needs: ["ubuntu20.04-fclib:configure"]
+
+ubuntu20.04-fclib:test:
+    variables:
+      IMAGE_NAME: $CI_REGISTRY_IMAGE/sources/ubuntu20.04
+      cdash_submit: 1
+      user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_with_fclib.cmake
+    needs: ["ubuntu20.04-fclib:build"]
+    extends: .siconos-test
+
 ubuntu20.04:configure:
    variables:
      IMAGE_NAME: $CI_REGISTRY_IMAGE/sources/ubuntu20.04
@@ -181,7 +207,7 @@ fedora-33:test:
     needs: ["fedora-33:build"]
     extends: .siconos-test
 
-# Try to generate sico install
+# Generate sico install
 #debianbuster:install:
 #  variables:
 #    siconos_docker_name: siconos-$CI_COMMIT_REF_NAME-debian-buster

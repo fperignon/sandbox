@@ -1,10 +1,7 @@
 #[=======================================================================[.rst:
-ctest_common.cmake
+ctest_tools.cmake
 ----
-This file contains:
-
-- some functions used to setup ctest config
-- the ctest configuration (global variables like CTEST_SOURCE_DIR and so on)
+This file contains the functions used to setup ctest config
 
 #]=======================================================================]
 
@@ -146,82 +143,4 @@ function(write_notes)
   set(CTEST_NOTES_FILES notes.txt PARENT_SCOPE)
 
 endfunction()
-
-# ------------------
-# Here starts ctest config
-# ------------------
-
-if(CI_TRAVIS)
-  list(APPEND CMAKE_MODULE_PATH ${CTEST_SOURCE_DIRECTORY}/ci_travis/cmake)
-  list(APPEND CMAKE_MODULE_PATH ${CTEST_SOURCE_DIRECTORY}/ci_travis/config)
-  list(APPEND CMAKE_MODULE_PATH ${CTEST_SOURCE_DIRECTORY}/ci_travis)
-  include(Tools)
-
-  # -- Get config --
-  # i.e. set extra options/values (cmake -Doption=value ...)
-  # either from file default.cmake or
-  # from file CI_CONFIG.cmake
-  # --> may set SICONOS_CMAKE_OPTIONS
-  # --> may set DSICONOS_COMPONENTS
-  # Rq : For Travis CI, we include cmake files while for gitlab CI we use
-  # siconos user option file. Todo: one way to rule them all?
-
-  if(CI_CONFIG)
-    string(REPLACE "," ";" CI_CONFIG_LIST ${CI_CONFIG})
-    foreach(_CI IN LISTS CI_CONFIG_LIST)
-      include(${_CI})
-    endforeach()
-  else()
-    set(CI_CONFIG default)
-    include(${CI_CONFIG})
-  endif()
-endif()
-
-# - Source dir and path to siconos install
-if(NOT CTEST_SOURCE_DIRECTORY)
-  set(CTEST_SOURCE_DIRECTORY $ENV{CI_PROJECT_DIR})
-endif()
-
-# - Top level build directory -
-# If not specified : current dir.
-if(NOT CTEST_BINARY_DIRECTORY)
-  set(CTEST_BINARY_DIRECTORY .)
-endif()
-
-# Install dir (used as CMAKE_INSTALL_PREFIX)
-# Must be in ${CI_PROJECT_DIR} to work properly with ci artifacts and similar.
-if(NOT SICONOS_INSTALL_DIR)
-  set(SICONOS_INSTALL_DIR $ENV{CI_PROJECT_DIR}/install-siconos/)
-endif()
-# Build name (for cdash)
-if(NOT CTEST_BUILD_NAME)
-  set_cdash_build_name()
-endif()
-
-if(USER_FILE)
-  list(APPEND SICONOS_CMAKE_OPTIONS -DUSER_OPTIONS_FILE=${USER_FILE})
-endif()
-
-# list(APPEND SICONOS_CMAKE_OPTIONS -DCMAKE_INSTALL_PREFIX=${SICONOS_INSTALL_DIR})
-list(APPEND SICONOS_CMAKE_OPTIONS -DWITH_GIT=ON) # required to generate siconos-commit.txt to tag cdash build in the examples.
-
-if(DEFINED ENV{OCE_INSTALL}) # set if oce has been installed using oce repo, in install_oce.sh
-  message("Search oce in $ENV{OCE_INSTALL}.")
-  list(APPEND SICONOS_CMAKE_OPTIONS -DOCE_DIR=$ENV{OCE_INSTALL})
-endif()
-
-# Parallel build only for siconos_install. For examples it leads to: warning: jobserver unavailable: using -j1. Add `+' to parent make rule.
-#set(CTEST_MEMORYCHECK_SUPPRESSIONS_FILE ${CTEST_SOURCE_DIRECTORY}/cmake/valgrind.supp)
-
-if(NOT CTEST_CMAKE_GENERATOR)
-  set(CTEST_CMAKE_GENERATOR "Unix Makefiles")
-endif()
-
-if(NOT CTEST_SITE)
-  set_site_name()
-endif()
-
-if(NOT CTEST_BUILD_CONFIGURATION)
-  set(CTEST_BUILD_CONFIGURATION "Release")
-endif()
 

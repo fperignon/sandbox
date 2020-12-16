@@ -31,4 +31,4 @@ RUN apt update  && apt install -y -qq \
         python3-packaging \
         valgrind \
         python3-lxml \
-        python3-h5py && apt clean && apt autoremove
+        python3-h5py && apt clean && apt autoremove && rm -rf /var/lib/apt/lists/*

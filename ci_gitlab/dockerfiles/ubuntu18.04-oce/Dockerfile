@@ -3,7 +3,7 @@ RUN apt update  && apt install -y -qq \
         liboce-foundation-dev \
         liboce-modeling-dev \
         liboce-ocaf-dev \
-        liboce-visualization-dev && apt clean && apt autoremove
+        liboce-visualization-dev && apt clean && apt autoremove  && rm -rf /var/lib/apt/lists/*
 WORKDIR /home
 COPY ci_gitlab/dockerfiles/install_oce.sh /home
 ENV CI_PROJECT_DIR /home

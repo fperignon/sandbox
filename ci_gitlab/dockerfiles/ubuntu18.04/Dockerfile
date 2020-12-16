@@ -25,14 +25,16 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone &
         libcppunit-dev \
         libbullet-dev \
         libfreetype6-dev \
+        libhdf5-dev \
         freeglut3-dev \
         vim  \
         swig \
         doxygen \
-        python3-pip\
+        python3-pip \
         python3-scipy \
         python3-pytest \
 	valgrind \
         python3-lxml \
         python3-h5py \
-        python3-packaging && apt clean && apt autoremove
+        python3-packaging && apt clean && apt autoremove && rm -rf /var/lib/apt/lists/*
+

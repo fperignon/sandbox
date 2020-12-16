@@ -1,11 +1,20 @@
-FROM gricad-registry.univ-grenoble-alpes.fr/ced2019/siconos/sources/ubuntu20.04-no-python
+FROM gricad-registry.univ-grenoble-alpes.fr/ced2019/siconos/sources/ubuntu20.04-light
 RUN apt update  && apt install -y -qq \
+        lp-solve \
+        liblpsolve55-dev \
+        libhdf5-dev \
+        libboost-serialization-dev \
+        libbullet-dev \
+        libfreetype6-dev \
+        freeglut3-dev \
         swig \
-        doxygen \
-        python3-pip\
+        libpython3-dev \
+        python3 \
+        python3-pip \
         python3-scipy \
         python3-pytest \
-	    valgrind \
+	valgrind \
         python3-lxml \
-        python3-h5py && apt clean && apt autoremove
+        python3-packaging \
+        python3-h5py && apt clean && apt autoremove && rm -rf /var/lib/apt/lists/*
 

@@ -1,6 +1,4 @@
 #!bin/bash
-#
-# Check if CI_PROJECT_DIR is set AND not empty
 
 # -- Fclib download --
 cd $HOME

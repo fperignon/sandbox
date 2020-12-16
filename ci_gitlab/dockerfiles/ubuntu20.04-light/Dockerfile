@@ -6,7 +6,6 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone &
         git-core \
         make \
         libboost-dev \
-        libboost-serialization-dev \
         libboost-filesystem-dev \
         libboost-timer-dev \
         libboost-chrono-dev \
@@ -17,13 +16,5 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone &
         g++ \
         libopenblas-dev \
         liblapacke-dev \
-        lp-solve \
-        liblpsolve55-dev \
-        python3 \
-        python3-packaging \
-        libpython3-dev \
         libcppunit-dev \
-        libbullet-dev \
-        libfreetype6-dev \
-        freeglut3-dev \
-        vim && apt clean && apt autoremove
+        vim && apt clean && apt autoremove && rm -rf /var/lib/apt/lists/*
