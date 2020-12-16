@@ -50,6 +50,8 @@ if(WITH_GIT) # User defined option, default = off
   endif()
 endif()
 
+message("aiaiaiaiaiiaiaiaai WITH GIT ??? ${WITH_GIT}")
+
 # Save date/time into BUILD_TIMESTAMP var
 string(TIMESTAMP BUILD_TIMESTAMP)
 

@@ -82,6 +82,8 @@ install(
   DESTINATION ${ConfigPackageLocation})
 
 if(WITH_GIT)
+message("ooooooo WITH GIT ??? ${WITH_GIT}")
+
     # Save and install a file which contain git references for the current source directory
     # (branch and short commit number), mostly used by continuous integration and cdash 
     # to tag cdash builds.
