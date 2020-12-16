@@ -84,21 +84,21 @@ fedora33:docker-build:
 
 ubuntu18.04:full:
       variables:
-        IMAGE_NAME: $CI_REGISTRY_IMAGE/ubuntu18.04
+        IMAGE_NAME: $CI_REGISTRY_IMAGE/sources/ubuntu18.04
         cdash_submit: 1
         user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
       extends: .siconos-full
       
 debian-buster:configure:
    variables:
-     IMAGE_NAME: $CI_REGISTRY_IMAGE/debian-buster
+     IMAGE_NAME: $CI_REGISTRY_IMAGE/sources/debian-buster
      cdash_submit: 1
      user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
    extends: .siconos-configure
 
 debian-buster:build:
     variables:
-      IMAGE_NAME: $CI_REGISTRY_IMAGE/debian-buster
+      IMAGE_NAME: $CI_REGISTRY_IMAGE/sources/debian-buster
       cdash_submit: 1
       user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
     extends: .siconos-build
@@ -106,7 +106,7 @@ debian-buster:build:
 
 debian-buster:test:
     variables:
-      IMAGE_NAME: $CI_REGISTRY_IMAGE/debian-buster
+      IMAGE_NAME: $CI_REGISTRY_IMAGE/sources/debian-buster
       cdash_submit: 1
       user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
     needs: ["debian-buster:build"]
@@ -114,14 +114,14 @@ debian-buster:test:
 
 ubuntu20.04:configure:
    variables:
-     IMAGE_NAME: $CI_REGISTRY_IMAGE/ubuntu20.04
+     IMAGE_NAME: $CI_REGISTRY_IMAGE/sources/ubuntu20.04
      cdash_submit: 1
      user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
    extends: .siconos-configure
 
 ubuntu20.04:build:
     variables:
-      IMAGE_NAME: $CI_REGISTRY_IMAGE/ubuntu20.04
+      IMAGE_NAME: $CI_REGISTRY_IMAGE/sources/ubuntu20.04
       cdash_submit: 1
       user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
     extends: .siconos-build
@@ -129,7 +129,7 @@ ubuntu20.04:build:
 
 ubuntu20.04:test:
     variables:
-      IMAGE_NAME: $CI_REGISTRY_IMAGE/ubuntu20.04
+      IMAGE_NAME: $CI_REGISTRY_IMAGE/sources/ubuntu20.04
       cdash_submit: 1
       user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
     needs: ["ubuntu20.04:build"]
@@ -137,14 +137,14 @@ ubuntu20.04:test:
 
 ubuntu20.04-oce:configure:
    variables:
-     IMAGE_NAME: $CI_REGISTRY_IMAGE/ubuntu20.04-oce
+     IMAGE_NAME: $CI_REGISTRY_IMAGE/sources/ubuntu20.04-oce
      cdash_submit: 1
      user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_with_mechanisms.cmake
    extends: .siconos-configure
 
 ubuntu20.04-oce:build:
     variables:
-      IMAGE_NAME: $CI_REGISTRY_IMAGE/ubuntu20.04-oce
+      IMAGE_NAME: $CI_REGISTRY_IMAGE/sources/ubuntu20.04-oce
       cdash_submit: 1
       user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_with_mechanisms.cmake
     extends: .siconos-build
@@ -152,7 +152,7 @@ ubuntu20.04-oce:build:
 
 ubuntu20.04-oce:test:
     variables:
-      IMAGE_NAME: $CI_REGISTRY_IMAGE/ubuntu20.04-oce
+      IMAGE_NAME: $CI_REGISTRY_IMAGE/sources/ubuntu20.04-oce
       cdash_submit: 1
       user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_with_mechanisms.cmake
     needs: ["ubuntu20.04-oce:build"]
@@ -160,14 +160,14 @@ ubuntu20.04-oce:test:
 
 fedora-33:configure:
    variables:
-     IMAGE_NAME: $CI_REGISTRY_IMAGE/fedora-33
+     IMAGE_NAME: $CI_REGISTRY_IMAGE/sources/fedora-33
      cdash_submit: 1
      user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
    extends: .siconos-configure
 
 fedora-33:build:
     variables:
-      IMAGE_NAME: $CI_REGISTRY_IMAGE/fedora-33
+      IMAGE_NAME: $CI_REGISTRY_IMAGE/sources/fedora-33
       cdash_submit: 1
       user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
     extends: .siconos-build
@@ -175,7 +175,7 @@ fedora-33:build:
 
 fedora-33:test:
     variables:
-      IMAGE_NAME: $CI_REGISTRY_IMAGE/fedora-33
+      IMAGE_NAME: $CI_REGISTRY_IMAGE/sources/fedora-33
       cdash_submit: 1
       user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_default.cmake
     needs: ["fedora-33:build"]
@@ -191,7 +191,7 @@ fedora-33:test:
 
 debianbuster:install:
   variables:
-    IMAGE_NAME: $CI_REGISTRY_IMAGE/debian-buster
+    IMAGE_NAME: $CI_REGISTRY_IMAGE/sources/debian-buster
     siconos_docker_name: siconos-$CI_COMMIT_REF_NAME-debian-buster
   #allow_failure: true
   extends: .siconos-install
@@ -199,7 +199,7 @@ debianbuster:install:
 
 ubuntu20-oce:install:
   variables:
-    IMAGE_NAME: $CI_REGISTRY_IMAGE/ubuntu20.04-oce
+    IMAGE_NAME: $CI_REGISTRY_IMAGE/sources/ubuntu20.04-oce
     siconos_docker_name: siconos-$CI_COMMIT_REF_NAME-ubuntu-fossa
   extends: .siconos-install
   needs: ["ubuntu20.04-oce:build"]
