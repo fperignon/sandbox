@@ -79,7 +79,7 @@ stages:
   stage: docker-build
   script:
     - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
-    - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $docker_path/$IMAGE_NAME/Dockerfile --destination $CI_REGISTRY_IMAGE/$IMAGE_NAME:latest
+    - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $docker_path/$IMAGE_NAME/Dockerfile --destination $CI_REGISTRY_IMAGE/sources/$IMAGE_NAME:latest
   only:
     variables: # Run this job only when commit message starts with [docker-build]
       - $CI_COMMIT_MESSAGE =~ /^\[docker-build\].*/i      
