@@ -1,4 +1,4 @@
-FROM gricad-registry.univ-grenoble-alpes.fr/ced2019/siconos/ubuntu20.04
+FROM gricad-registry.univ-grenoble-alpes.fr/ced2019/siconos/sources/ubuntu20.04
 RUN apt update  && apt install -y -qq \
         liboce-foundation-dev \
         liboce-modeling-dev \
