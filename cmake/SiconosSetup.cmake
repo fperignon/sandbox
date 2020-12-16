@@ -27,7 +27,7 @@ if(WITH_GIT) # User defined option, default = off
   # Saved in SOURCE_ABBREV_GIT_SHA1 and SOURCE_GIT_SHA1
   # These vars are useful for tests logs and 'write_notes' macro.
   find_package(Git)
-   if(GIT_FOUND)
+  if(GIT_FOUND)
     set(CTEST_GIT_COMMAND "${GIT_EXECUTABLE}" )     
     execute_process(COMMAND 
       ${GIT_EXECUTABLE} rev-parse --short HEAD
@@ -40,8 +40,8 @@ if(WITH_GIT) # User defined option, default = off
       OUTPUT_VARIABLE SOURCE_GIT_SHA1
       OUTPUT_STRIP_TRAILING_WHITESPACE
       WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
-
- endif()
+  endif()
+endif()
 
 # Save date/time into BUILD_TIMESTAMP var
 string(TIMESTAMP BUILD_TIMESTAMP)
