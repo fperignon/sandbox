@@ -85,6 +85,6 @@ if(WITH_GIT)
     # Save and install a file which contain git references for the current source directory
     # (branch and short commit number), mostly used by continuous integration and cdash 
     # to tag cdash builds.
-    file({WRITE siconos-commit.txt "${COMMIT_REF_NAME}-${SOURCE_ABBREV_GIT_SHA1"})
+    file({WRITE siconos-commit.txt "${COMMIT_REF_NAME}-${SOURCE_ABBREV_GIT_SHA1}")
     install(FILES ${CMAKE_BINARY_DIR}/siconos-commit.txt DESTINATION share)
 endif()
