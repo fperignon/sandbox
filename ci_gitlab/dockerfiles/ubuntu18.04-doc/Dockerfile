@@ -1,5 +1,5 @@
 FROM gricad-registry.univ-grenoble-alpes.fr/ced2019/siconos/sources/ubuntu18.04-oce
-RUN apt update  && apt install -y -qq \
+RUN apt update  && apt upgrade -y && apt install -y -qq \
         graphviz && apt clean && apt autoremove&& rm -rf /var/lib/apt/lists/*
 WORKDIR /home
 COPY requirements4doc.txt .

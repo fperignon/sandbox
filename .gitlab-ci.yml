@@ -118,8 +118,6 @@ ubuntu20.04-fclib:configure:
      cdash_submit: 1
      user_file: $CI_PROJECT_DIR/$siconos_confs/siconos_with_fclib.cmake
    extends: .siconos-configure
-   before_script:
-     - "sh ci_gitlab/dockerfiles/install_fclib.sh"
 
 ubuntu20.04-fclib:build:
     variables:

@@ -1,5 +1,5 @@
 FROM debian:buster
-RUN apt update  && apt install -y -qq \
+RUN apt update  && apt upgrade -y && apt install -y -qq \
         cmake \
         git-core \
         make \

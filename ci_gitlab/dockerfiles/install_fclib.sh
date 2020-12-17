@@ -13,3 +13,4 @@ cd $HOME/build
 cmake $HOME/fclib -DFCLIB_HEADER_ONLY=OFF
 make
 make install
+rm -rf $HOME/fclib $HOME/build

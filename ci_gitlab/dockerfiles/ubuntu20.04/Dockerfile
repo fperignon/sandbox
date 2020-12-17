@@ -1,5 +1,5 @@
 FROM gricad-registry.univ-grenoble-alpes.fr/ced2019/siconos/sources/ubuntu20.04-light
-RUN apt update  && apt install -y -qq \
+RUN apt update  && apt upgrade -y &&  apt install -y -qq \
         lp-solve \
         liblpsolve55-dev \
         libhdf5-dev \
@@ -17,4 +17,5 @@ RUN apt update  && apt install -y -qq \
         python3-lxml \
         python3-packaging \
         python3-h5py && apt clean && apt autoremove && rm -rf /var/lib/apt/lists/*
-
+COPY ci_gitlab/dockerfiles/install_fclib.sh /home
+RUN sh /home/install_fclib.sh

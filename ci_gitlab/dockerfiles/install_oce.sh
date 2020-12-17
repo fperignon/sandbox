@@ -62,3 +62,5 @@ cd $CI_PROJECT_DIR
 # test ...
 export PYTHONPATH=$pyocc_installpath
 python3 -c 'import OCC; print(OCC.__file__)'
+rm -rf $CI_PROJECT_DIR/build/
+rm -rf $CI_PROJECT_DIR/pythonocc-core
