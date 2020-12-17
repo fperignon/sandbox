@@ -87,7 +87,7 @@ if(WITH_GIT)
   # to tag cdash builds.
   # git reference name (branch, tag ...) 
   execute_process(COMMAND
-    git branch --show-current
+    git rev-parse --abbrev-ref HEAD
     OUTPUT_VARIABLE COMMIT_REF_NAME
     OUTPUT_STRIP_TRAILING_WHITESPACE
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
