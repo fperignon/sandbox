@@ -239,8 +239,8 @@ ubuntu20-oce:install:
 # Trigger : manual.
 # When the job is activated (manual trigger through the web interface),
 # it starts a new pipeline, i.e. includes jobs declared in docs/build-doc.yml
-siconos:build-doc:
-  stage: build
+documentation:siconos:
+  stage: configure
   trigger:
     include:
       - docs/build-doc.yml
