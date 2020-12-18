@@ -227,6 +227,16 @@ ubuntu20-oce:install:
   extends: .siconos-install
   needs: ["ubuntu20.04-oce:build"]
 
+# --- Creates a new pipeline to build documentation
+# Trigger : manual.
+# When the job is activated (manual trigger through the web interface),
+# it starts a new pipeline, i.e. includes jobs declared in docs/build-doc.yml
+siconos:build-doc:
+  stage: build
+  trigger:
+    include:
+      - docs/build-doc.yml
+  when: manual
 
 # -- Jobs on demand --
 # Triggered through the interface

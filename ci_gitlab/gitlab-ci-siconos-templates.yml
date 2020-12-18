@@ -56,7 +56,7 @@ stages:
   # Templates for these jobs : .siconos-build (see below).
   # --- Doc stages ---
   # Build documentation
-  - doc-build
+  # - doc-build
   - doc-deploy
 
 # --- Templates definitions ---
