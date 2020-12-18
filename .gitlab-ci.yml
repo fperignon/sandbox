@@ -81,6 +81,14 @@ fedora33:docker-build:
     IMAGE_NAME: fedora-33
   extends: .docker-build
 
+ubuntu20.4-doc:docker-build:
+  variables:
+    IMAGE_NAME: ubuntu20.04-doc
+  extends: .docker-build
+  stage: docker-build-layer3
+  needs: ["ubuntu20.4:docker-build"]
+
+
 
 ubuntu18.04:full:
       variables:
