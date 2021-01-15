@@ -29,9 +29,9 @@ endif()
 include(swig_python_tools)
 swig_module_setup(${COMPONENT}_PYTHON_MODULES)
 
-foreach(mod IN LISTS ${${COMPONENT}_PYTHON_MODULES})
-  target_link_libraries(${mod} _kernel)
-endforeach()
+# foreach(mod IN LISTS ${${COMPONENT}_PYTHON_MODULES})
+#   target_link_libraries(${mod} _kernel)
+# endforeach()
 
 if(WITH_${COMPONENT}_TESTING)
   if(NOT HAS_FORTRAN)

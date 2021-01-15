@@ -6,7 +6,7 @@
 include: ci_gitlab/gitlab-ci-siconos-templates.yml
 
 # --- Build doc/web site and publish it ---
-siconos-doc:
+doc:build:
   variables:
     IMAGE_NAME: $CI_REGISTRY_IMAGE/sources/ubuntu20.04-doc
     cdash_submit: 0
@@ -27,5 +27,5 @@ pages:
     paths:
     - public
   stage: doc-deploy 
-  needs: ["siconos-doc"]
+  needs: ["doc:build"]
 
